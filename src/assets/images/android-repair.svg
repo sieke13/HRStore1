@@ -1,0 +1,51 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="androidGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3ddc84;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1b5e20;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="phoneGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#212121;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#424242;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="200" fill="#f8fafc"/>
+  
+  <!-- Android Phone -->
+  <rect x="120" y="30" width="60" height="140" rx="8" ry="8" fill="url(#phoneGradient2)" stroke="#000" stroke-width="1"/>
+  
+  <!-- Screen -->
+  <rect x="125" y="40" width="50" height="110" rx="4" ry="4" fill="#000"/>
+  
+  <!-- Android screen content -->
+  <rect x="127" y="42" width="46" height="106" rx="2" fill="url(#androidGradient)"/>
+  
+  <!-- Navigation buttons -->
+  <circle cx="135" cy="160" r="2" fill="#666"/>
+  <rect x="148" y="158" width="4" height="4" fill="#666"/>
+  <path d="M160 158 L164 162 L160 166 Z" fill="#666"/>
+  
+  <!-- Camera -->
+  <circle cx="150" cy="48" r="2" fill="#333"/>
+  
+  <!-- Android robot -->
+  <circle cx="145" cy="80" r="8" fill="#3ddc84"/>
+  <circle cx="142" cy="77" r="1" fill="#fff"/>
+  <circle cx="148" cy="77" r="1" fill="#fff"/>
+  <rect x="141" y="85" width="8" height="12" rx="4" fill="#3ddc84"/>
+  
+  <!-- Tools -->
+  <!-- Battery -->
+  <rect x="200" y="70" width="20" height="35" rx="2" fill="#4caf50" stroke="#2e7d32" stroke-width="1"/>
+  <rect x="206" y="67" width="8" height="3" rx="1" fill="#2e7d32"/>
+  <text x="210" y="90" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#fff">+</text>
+  
+  <!-- Screen replacement -->
+  <rect x="75" y="80" width="25" height="40" rx="3" fill="#e3f2fd" stroke="#1976d2" stroke-width="2"/>
+  <line x1="80" y1="85" x2="95" y2="85" stroke="#1976d2" stroke-width="1"/>
+  <line x1="80" y1="90" x2="95" y2="90" stroke="#1976d2" stroke-width="1"/>
+  
+  <text x="150" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Android Repair</text>
+</svg>

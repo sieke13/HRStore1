@@ -1,0 +1,32 @@
+<svg width="84" height="32" viewBox="0 0 84 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo azul profesional similar a MercadoPago -->
+  <rect width="84" height="32" rx="4" fill="#1e40af"/>
+  
+  <!-- Icono de banco central -->
+  <g transform="translate(6, 4)">
+    <!-- Edificio principal -->
+    <rect x="8" y="10" width="56" height="14" fill="white" fill-opacity="0.9" rx="1"/>
+    
+    <!-- Columnas del banco -->
+    <rect x="12" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="18" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="24" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="30" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="36" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="42" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="48" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    <rect x="54" y="8" width="3" height="16" fill="white" rx="0.5"/>
+    
+    <!-- Techo triangular -->
+    <path d="M6 8 L36 2 L66 8 L64 8 L36 4 L8 8 Z" fill="white"/>
+    
+    <!-- Base sólida -->
+    <rect x="4" y="24" width="64" height="2" fill="white" rx="1"/>
+    
+    <!-- Símbolo de transferencia (flechas intercambiadas) -->
+    <g transform="translate(28, 12)" stroke="white" stroke-width="2" fill="none" stroke-linecap="round">
+      <path d="M2 2 L12 2 M10 0 L12 2 L10 4"/>
+      <path d="M18 6 L8 6 M10 4 L8 6 L10 8"/>
+    </g>
+  </g>
+</svg>

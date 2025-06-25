@@ -1,0 +1,57 @@
+{
+  "id": "demo-preference-12345",
+  "init_point": "https://sandbox.mercadopago.com.mx/checkout/v1/redirect?pref_id=demo-preference-12345",
+  "sandbox_init_point": "https://sandbox.mercadopago.com.mx/checkout/v1/redirect?pref_id=demo-preference-12345",
+  "date_created": "2025-06-18T10:00:00.000-04:00",
+  "operation_type": "regular_payment",
+  "items": [
+    {
+      "id": "item-id-1",
+      "title": "Kit de Destornilladores de Precisión",
+      "currency_id": "MXN",
+      "quantity": 1,
+      "unit_price": 29.99
+    }
+  ],
+  "payer": {
+    "name": "",
+    "surname": "",
+    "email": "",
+    "phone": {
+      "area_code": "",
+      "number": ""
+    },
+    "identification": {
+      "type": "",
+      "number": ""
+    },
+    "address": {
+      "street_name": "",
+      "street_number": null,
+      "zip_code": ""
+    }
+  },
+  "back_urls": {
+    "success": "http://localhost:3004/success",
+    "failure": "http://localhost:3004/failure",
+    "pending": "http://localhost:3004/pending"
+  },
+  "auto_return": "approved",
+  "payment_methods": {
+    "excluded_payment_methods": [],
+    "excluded_payment_types": [],
+    "installments": 12
+  },
+  "client_id": "demo-client-id",
+  "marketplace": "NONE",
+  "marketplace_fee": 0,
+  "shipments": {
+    "receiver_address": {
+      "zip_code": "",
+      "street_name": "",
+      "street_number": null,
+      "floor": "",
+      "apartment": ""
+    }
+  }
+}

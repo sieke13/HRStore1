@@ -1,0 +1,54 @@
+<svg width="300" height="200" viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="screenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="300" height="200" fill="#f8fafc"/>
+  
+  <!-- Broken phone -->
+  <rect x="80" y="40" width="50" height="100" rx="8" fill="#1f2937" stroke="#111827" stroke-width="1"/>
+  
+  <!-- Cracked screen -->
+  <rect x="85" y="50" width="40" height="70" rx="4" fill="#000"/>
+  <!-- Crack lines -->
+  <path d="M90 55 L115 85 L95 110" stroke="#ef4444" stroke-width="2" fill="none"/>
+  <path d="M105 60 L120 90 L100 115" stroke="#ef4444" stroke-width="1.5" fill="none"/>
+  <path d="M88 75 L110 75" stroke="#ef4444" stroke-width="1" fill="none"/>
+  
+  <!-- Arrow -->
+  <path d="M140 90 L160 90" stroke="#22c55e" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22c55e"/>
+    </marker>
+  </defs>
+  
+  <!-- Fixed phone -->
+  <rect x="170" y="40" width="50" height="100" rx="8" fill="#1f2937" stroke="#111827" stroke-width="1"/>
+  
+  <!-- New screen -->
+  <rect x="175" y="50" width="40" height="70" rx="4" fill="url(#screenGradient)"/>
+  
+  <!-- Screen content -->
+  <circle cx="195" cy="65" r="3" fill="#fff" opacity="0.8"/>
+  <rect x="185" y="75" width="20" height="2" rx="1" fill="#fff" opacity="0.6"/>
+  <rect x="185" y="80" width="15" height="2" rx="1" fill="#fff" opacity="0.6"/>
+  <rect x="185" y="85" width="18" height="2" rx="1" fill="#fff" opacity="0.6"/>
+  
+  <!-- Repair process icons -->
+  <circle cx="150" cy="60" r="15" fill="#22c55e" opacity="0.2"/>
+  <path d="M145 60 L149 64 L155 56" stroke="#22c55e" stroke-width="2" fill="none"/>
+  
+  <!-- Tools used -->
+  <line x1="130" y1="150" x2="145" y2="135" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="128" cy="152" r="2" fill="#dc2626"/>
+  
+  <line x1="155" y1="135" x2="170" y2="150" stroke="#fbbf24" stroke-width="2"/>
+  <circle cx="172" cy="152" r="2" fill="#2563eb"/>
+  
+  <text x="150" y="190" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#1e293b">Screen Replacement</text>
+</svg>
