@@ -29,7 +29,9 @@ const Contact: React.FC = () => {
             <section className="contact-hero">
                 <div className="container">
                     <h1>📞 Contáctanos</h1>
-                    <p>Estamos aquí para ayudarte con todas tus necesidades de reparación de dispositivos móviles</p>
+                    <p>
+                        Estamos aquí para ayudarte con todas tus necesidades de reparación de dispositivos móviles
+                    </p>
                 </div>
             </section>
 
@@ -41,7 +43,12 @@ const Contact: React.FC = () => {
                     <div className="contact-info-grid">
                         <div className="contact-card">
                             <div className="contact-icon">
-                                <FaPhone />
+                                <FaPhone style={{
+                                    background: 'linear-gradient(90deg, #f5f6fa 0%, #bfc9d1 40%, #e0e0e0 60%, #f5f6fa 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    filter: 'drop-shadow(0 0 8px #bfc9d1)'
+                                }} />
                             </div>
                             <div className="contact-details">
                                 <h3>Teléfono</h3>
@@ -52,7 +59,12 @@ const Contact: React.FC = () => {
                         
                         <div className="contact-card">
                             <div className="contact-icon">
-                                <FaEnvelope />
+                                <FaEnvelope style={{
+                                    background: 'linear-gradient(90deg, #f5f6fa 0%, #bfc9d1 40%, #e0e0e0 60%, #f5f6fa 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    filter: 'drop-shadow(0 0 8px #bfc9d1)'
+                                }} />
                             </div>
                             <div className="contact-details">
                                 <h3>Email</h3>
@@ -63,7 +75,12 @@ const Contact: React.FC = () => {
                         
                         <div className="contact-card">
                             <div className="contact-icon">
-                                <FaMapMarkerAlt />
+                                <FaMapMarkerAlt style={{
+                                    background: 'linear-gradient(90deg, #f5f6fa 0%, #bfc9d1 40%, #e0e0e0 60%, #f5f6fa 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    filter: 'drop-shadow(0 0 8px #bfc9d1)'
+                                }} />
                             </div>
                             <div className="contact-details">
                                 <h3>Dirección</h3>
@@ -74,7 +91,12 @@ const Contact: React.FC = () => {
                         
                         <div className="contact-card">
                             <div className="contact-icon">
-                                <FaClock />
+                                <FaClock style={{
+                                    background: 'linear-gradient(90deg, #f5f6fa 0%, #bfc9d1 40%, #e0e0e0 60%, #f5f6fa 100%)',
+                                    WebkitBackgroundClip: 'text',
+                                    WebkitTextFillColor: 'transparent',
+                                    filter: 'drop-shadow(0 0 8px #bfc9d1)'
+                                }} />
                             </div>
                             <div className="contact-details">
                                 <h3>Horarios</h3>

@@ -37,7 +37,7 @@ const AnimatedHeroBackground: React.FC = () => {
                 setIsVisible(true);
             }, 300); // Tiempo para el fade out
             
-        }, 2500); // Cambiar cada 2.5 segundos
+        }, 3500); // Cambiar cada 2.5 segundos
 
         return () => clearInterval(interval);
     }, [repairImages.length]);    const handleImageError = () => {
@@ -47,25 +47,49 @@ const AnimatedHeroBackground: React.FC = () => {
         );
     };
 
-    const currentImage = repairImages[currentImageIndex];    return (
-        <div className="animated-hero-background">
-            <div className={`repair-image-container ${isVisible ? 'visible' : 'hidden'}`}>
-                <img 
-                    src={currentImage.src} 
+    const currentImage = repairImages[currentImageIndex];
+    return (
+        <div className="animated-hero-background" style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: '48%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            pointerEvents: 'none',
+            zIndex: 1,
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif' // Apple Store font stack
+        }}>
+            <div
+                className={`repair-image-container ${isVisible ? 'visible' : 'hidden'}`}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '100%',
+                    height: '100%',
+                    transition: 'opacity 1s',
+                    opacity: isVisible ? 1 : 0,
+                    paddingRight: '8vw'
+                }}
+            >
+                <img
+                    src={currentImage.src}
                     alt={currentImage.alt}
                     className={`repair-image ${currentImage.type === 'photo' ? 'photo-style' : 'svg-style'}`}
                     onError={handleImageError}
+                    style={{
+                        maxHeight: 340,
+                        maxWidth: '100%',
+                        objectFit: 'contain',
+                        boxShadow: currentImage.type === 'photo' ? '0 4px 24px #0002' : 'none',
+                        borderRadius: currentImage.type === 'photo' ? 18 : 0,
+                        background: '#fff',
+                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif' // Apple Store font stack for alt text
+                    }}
                 />
-            </div>
-            {/* Elementos decorativos flotantes */}
-            <div className="floating-elements">
-                <div className="floating-tool tool-1">🔧</div>
-                <div className="floating-tool tool-2">📱</div>
-                <div className="floating-tool tool-3">🔩</div>
-                <div className="floating-tool tool-4">⚡</div>
-                <div className="floating-tool tool-5">🛠️</div>
-                <div className="floating-tool tool-6">🔌</div>
-                <div className="floating-tool tool-7">📟</div>
             </div>
         </div>
     );

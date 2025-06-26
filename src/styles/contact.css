@@ -1,28 +1,17 @@
-/* ===== CONTACT STYLES - REDISEÑO CON MAPA GRANDE Y ESTRUCTURA ORDENADA ===== */
+/* ===== APPLE/iOS STYLE CONTACT PAGE (Optimized for Contact.tsx) ===== */
 .contact-page {
   min-height: 100vh;
-  background: #ffffff;
+  background: #f5f5f7;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 }
 
 /* ===== HERO SECTION ===== */
 .contact-hero {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
-  padding: 4rem 0 3rem 0;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  padding: 3.5rem 0 2.5rem 0;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.contact-hero::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="contact-pattern" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23contact-pattern)"/></svg>');
-  z-index: 1;
+  border-radius: 0 0 2.5rem 2.5rem;
+  box-shadow: 0 2px 12px #0001;
 }
 
 .contact-hero .container {
@@ -31,18 +20,30 @@
 }
 
 .contact-hero h1 {
-  font-size: 3rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-size: 2.5rem;
+  font-weight: 900;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  letter-spacing: -1px;
+  margin-bottom: 0.7rem;
+  background: none;
+  text-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Remove inline gradient/text-shadow for Apple style */
+  color: #1d1d1f;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  filter: none;
 }
 
 .contact-hero p {
-  font-size: 1.3rem;
-  opacity: 0.95;
-  max-width: 700px;
-  margin: 0 auto;
-  line-height: 1.6;
+  font-size: 1.18rem;
+  color: #86868b;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  text-shadow: none;
 }
 
 /* ===== COMMON STYLES ===== */
@@ -55,13 +56,13 @@
 /* ===== CONTACT INFO CARDS ===== */
 .contact-content {
   padding: 3rem 0 1rem 0;
-  background: #ffffff;
+  background: #f5f5f7;
 }
 
 .contact-info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
   margin-bottom: 2rem;
 }
 
@@ -70,57 +71,63 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
-  border: 2px solid #e5f3ff;
-  transition: all 0.3s ease;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  border-radius: 2rem;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
+  transition: box-shadow 0.18s, border 0.18s, transform 0.18s;
 }
 
 .contact-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.15);
-  border-color: #3b82f6;
+  box-shadow: 0 8px 32px #0071e322;
+  border-color: #0071e3;
+  transform: translateY(-4px) scale(1.02);
 }
 
 .contact-icon {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
+  background: #f5f5f7;
+  color: #0071e3;
   width: 50px;
   height: 50px;
   border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 8px #0001;
 }
 
 .contact-details h3 {
-  font-size: 1.2rem;
-  color: #1e40af;
+  font-size: 1.1rem;
+  color: #1d1d1f;
   margin-bottom: 0.3rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: none;
+  -webkit-background-clip: initial;
+  -webkit-text-fill-color: initial;
+  text-shadow: none;
+  filter: none;
+  letter-spacing: 0;
 }
 
 .contact-details p {
   font-size: 1.05rem;
-  color: #3b82f6;
+  color: #0071e3;
   margin-bottom: 0.2rem;
   font-weight: 500;
 }
 
 .contact-details span {
   font-size: 0.9rem;
-  color: #64748b;
+  color: #86868b;
 }
 
-/* ===== MAP SECTION - HERO STYLE ===== */
+/* ===== MAP SECTION ===== */
 .map-section-hero {
-  background: #f8fafc;
+  background: #f5f5f7;
   padding: 3rem 0 0 0;
-  position: relative;
 }
 
 .map-header {
@@ -129,15 +136,16 @@
 }
 
 .map-header h2 {
-  font-size: 2.5rem;
-  color: #1e40af;
+  font-size: 2.2rem;
+  color: #1d1d1f;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 .map-header p {
   font-size: 1.1rem;
-  color: #64748b;
+  color: #86868b;
   max-width: 600px;
   margin: 0 auto;
 }
@@ -147,13 +155,19 @@
   cursor: pointer;
   overflow: hidden;
   width: 100%;
-  height: 600px;
-  box-shadow: 0 -10px 40px rgba(59, 130, 246, 0.1);
+  height: 400px;
+  border-radius: 2rem;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
+  margin-bottom: 2rem;
 }
 
 .map-container-hero iframe {
   transition: all 0.4s ease;
   filter: grayscale(20%) contrast(1.1);
+  border-radius: 2rem;
+  width: 100%;
+  height: 100%;
 }
 
 .map-container-hero:hover iframe {
@@ -167,12 +181,14 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(59, 130, 246, 0.08);
+  background: rgba(0,0,0,0.03);
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 0;
   transition: all 0.3s ease;
+  border-radius: 2rem;
+  pointer-events: none;
 }
 
 .map-container-hero:hover .map-overlay {
@@ -186,23 +202,23 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  color: #1e40af;
+  color: #1d1d1f;
   font-weight: 600;
   font-size: 1.1rem;
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
-  border: 2px solid #3b82f6;
+  box-shadow: 0 10px 30px #0001;
+  border: 1.5px solid #e0e0e5;
   backdrop-filter: blur(10px);
 }
 
 .map-click-hint svg {
-  color: #3b82f6;
+  color: #0071e3;
   font-size: 1.4rem;
 }
 
 /* ===== FORM AND SOCIAL SECTION ===== */
 .contact-form-social {
   padding: 4rem 0;
-  background: #ffffff;
+  background: #f5f5f7;
 }
 
 .contact-bottom-grid {
@@ -214,11 +230,11 @@
 
 /* ===== CONTACT FORM ===== */
 .contact-form-section {
-  background: #ffffff;
-  border-radius: 20px;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  border-radius: 2rem;
   padding: 2.5rem;
-  box-shadow: 0 4px 25px rgba(59, 130, 246, 0.08);
-  border: 2px solid #e5f3ff;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
 }
 
 .form-header {
@@ -226,17 +242,18 @@
 }
 
 .form-header h3 {
-  font-size: 1.8rem;
-  color: #1e40af;
+  font-size: 1.5rem;
+  color: #1d1d1f;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .form-header p {
-  color: #64748b;
+  color: #86868b;
   font-size: 1rem;
   line-height: 1.6;
 }
@@ -257,20 +274,20 @@
 .contact-form textarea {
   width: 100%;
   padding: 1.2rem 1.5rem;
-  border: 2px solid #e5f3ff;
+  border: 1.5px solid #e0e0e5;
   border-radius: 12px;
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: #ffffff;
+  background: #fff;
   font-family: inherit;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+  border-color: #0071e3;
+  background: #fff;
+  box-shadow: 0 0 0 4px #0071e311;
   transform: translateY(-1px);
 }
 
@@ -280,25 +297,28 @@
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%);
-  color: white;
-  border: none;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  color: #1d1d1f;
+  border: 1.5px solid #e0e0e5;
   padding: 1.2rem 2.5rem;
-  border-radius: 12px;
+  border-radius: 999px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
   align-self: flex-start;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 2px 8px #0001;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 .submit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+  background: #f5f5f7;
+  color: #0071e3;
+  border-color: #0071e3;
+  box-shadow: 0 8px 24px #0071e322;
 }
 
 /* ===== SOCIAL SECTION ===== */
@@ -309,50 +329,54 @@
 }
 
 .social-header h3 {
-  font-size: 1.6rem;
-  color: #1e40af;
+  font-size: 1.2rem;
+  color: #1d1d1f;
   margin-bottom: 0.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
 .social-header p {
-  color: #64748b;
+  color: #86868b;
   font-size: 1rem;
   line-height: 1.6;
 }
 
 /* WhatsApp CTA */
 .whatsapp-cta {
-  background: #ffffff;
-  border-radius: 16px;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  border-radius: 2rem;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.1);
-  border: 2px solid #e8f5e8;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
 }
 
 .whatsapp-main-btn {
-  background: linear-gradient(135deg, #25d366 0%, #20b359 100%);
-  color: white;
-  border: none;
+  background: #fff;
+  color: #0071e3;
+  border: 1.5px solid #e0e0e5;
   padding: 1.5rem 2rem;
-  border-radius: 14px;
+  border-radius: 999px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
   display: flex;
   align-items: center;
   gap: 1rem;
   width: 100%;
-  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 2px 8px #0001;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 .whatsapp-main-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  background: #f5f5f7;
+  color: #1d1d1f;
+  border-color: #0071e3;
+  box-shadow: 0 8px 24px #0071e322;
 }
 
 .whatsapp-main-btn svg {
@@ -374,18 +398,19 @@
 
 /* Social Networks */
 .social-networks {
-  background: #ffffff;
-  border-radius: 16px;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  border-radius: 2rem;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
-  border: 2px solid #e5f3ff;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
 }
 
 .social-networks h4 {
-  font-size: 1.2rem;
-  color: #1e40af;
+  font-size: 1.1rem;
+  color: #1d1d1f;
   margin-bottom: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 .social-buttons {
@@ -399,55 +424,46 @@
   align-items: center;
   gap: 0.8rem;
   padding: 1rem 1.5rem;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
+  border: 1.5px solid #e0e0e5;
+  border-radius: 999px;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  color: white;
+  transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+  color: #1d1d1f;
   text-decoration: none;
   font-size: 1rem;
   justify-content: center;
+  background: #fff;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  box-shadow: 0 2px 8px #0001;
 }
 
-.social-btn.facebook {
-  background: linear-gradient(135deg, #1877f2 0%, #166fe5 100%);
-  box-shadow: 0 4px 15px rgba(24, 119, 242, 0.3);
-}
-
-.social-btn.facebook:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(24, 119, 242, 0.4);
-}
-
-.social-btn.instagram {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  box-shadow: 0 4px 15px rgba(225, 48, 108, 0.3);
-}
-
-.social-btn.instagram:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(225, 48, 108, 0.4);
+.social-btn:hover {
+  background: #f5f5f7;
+  color: #0071e3;
+  border-color: #0071e3;
+  box-shadow: 0 8px 24px #0071e322;
 }
 
 /* Support Info */
 .support-info {
-  background: #ffffff;
-  border-radius: 16px;
+  background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+  border-radius: 2rem;
   padding: 2rem;
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
-  border: 2px solid #e5f3ff;
+  box-shadow: 0 2px 12px #0001;
+  border: 1.5px solid #e0e0e5;
 }
 
 .support-info h4 {
-  font-size: 1.2rem;
-  color: #1e40af;
+  font-size: 1.1rem;
+  color: #1d1d1f;
   margin-bottom: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
 }
 
 .support-info p {
-  color: #64748b;
+  color: #86868b;
   font-size: 0.95rem;
   line-height: 1.6;
   margin-bottom: 1.5rem;
@@ -460,7 +476,7 @@
 }
 
 .support-features li {
-  color: #64748b;
+  color: #86868b;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
   display: flex;
@@ -473,17 +489,14 @@
   .contact-bottom-grid {
     gap: 3rem;
   }
-  
   .contact-hero h1 {
-    font-size: 2.5rem;
-  }
-  
-  .map-header h2 {
     font-size: 2.2rem;
   }
-  
+  .map-header h2 {
+    font-size: 2rem;
+  }
   .map-container-hero {
-    height: 500px;
+    height: 300px;
   }
 }
 
@@ -491,55 +504,44 @@
   .contact-hero {
     padding: 3rem 0 2rem 0;
   }
-  
   .contact-hero h1 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
-  
   .contact-hero p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
-  
   .contact-info-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
   .contact-card {
     padding: 1.2rem;
   }
-  
   .map-section-hero {
     padding: 2rem 0 0 0;
   }
-  
   .map-header h2 {
-    font-size: 2rem;
+    font-size: 1.3rem;
   }
-  
   .map-container-hero {
-    height: 400px;
+    height: 200px;
   }
-  
   .contact-bottom-grid {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
-  
   .contact-form-section,
   .whatsapp-cta,
   .social-networks,
   .support-info {
-    padding: 1.8rem;
+    padding: 1.2rem;
   }
-  
   .form-row {
     grid-template-columns: 1fr;
     gap: 1.2rem;
   }
-  
   .contact-form-social {
-    padding: 3rem 0;
+    padding: 2rem 0;
   }
 }
 
@@ -547,117 +549,45 @@
   .container {
     padding: 0 1rem;
   }
-  
   .contact-hero {
-    padding: 2.5rem 0 1.5rem 0;
+    padding: 2rem 0 1rem 0;
   }
-  
   .contact-hero h1 {
-    font-size: 1.8rem;
+    font-size: 1.2rem;
   }
-  
-  .contact-hero p {
-    font-size: 1rem;
-  }
-  
-  .contact-card {
-    padding: 1rem;
-    gap: 0.8rem;
-  }
-  
-  .contact-icon {
-    width: 45px;
-    height: 45px;
-    font-size: 1.1rem;
-  }
-  
-  .map-header h2 {
-    font-size: 1.8rem;
-  }
-  
-  .map-container-hero {
-    height: 350px;
-  }
-  
-  .contact-form-section,
-  .whatsapp-cta,
-  .social-networks,
-  .support-info {
-    padding: 1.5rem;
-  }
-  
-  .form-header h3 {
-    font-size: 1.5rem;
-  }
-  
-  .social-header h3 {
-    font-size: 1.4rem;
-  }
-  
-  .whatsapp-main-btn {
-    padding: 1.2rem 1.5rem;
-  }
-  
-  .map-click-hint {
-    padding: 1rem 1.5rem;
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 0 1rem;
-  }
-  
-  .contact-hero {
-    padding: 2.5rem 0 1.5rem 0;
-  }
-  
-  .contact-hero h1 {
-    font-size: 1.8rem;
-  }
-  
   .contact-hero p {
     font-size: 0.95rem;
   }
-  
   .contact-info,
   .contact-form-section {
-    padding: 1.5rem;
+    padding: 1rem;
   }
-  
   .map-section h2 {
-    padding: 1.5rem 1.5rem 0 1.5rem;
-    font-size: 1.6rem;
+    padding: 1rem 1rem 0 1rem;
+    font-size: 1rem;
   }
-  
   .map-container {
-    margin: 0 1.5rem;
+    margin: 0 1rem;
   }
-  
   .contact-item {
     padding: 1rem;
     gap: 0.8rem;
   }
-  
   .contact-icon {
     width: 40px;
     height: 40px;
     font-size: 1rem;
   }
-  
   .contact-details h3 {
     font-size: 1rem;
   }
-  
   .contact-details p {
     font-size: 0.9rem;
   }
-  
   .social-buttons {
     flex-direction: column;
-    gap: 0.8rem;  }
-  
+    gap: 0.8rem;
+  }
   .social-btn {
     justify-content: center;
   }

@@ -10,6 +10,7 @@ import Services from './pages/Services';
 import Login from './pages/Login';
 import Contact from './pages/Contact';
 import './styles/index.css';
+import WhatsAppChatbot from './components/WhatsAppChatbot';
 
 const App: React.FC = () => {
   const pathname = window.location.pathname;
@@ -59,6 +60,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       {renderPage()}
+      <WhatsAppChatbot />
     </div>
   );
 };

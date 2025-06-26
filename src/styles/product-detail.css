@@ -220,19 +220,26 @@
 }
 
 .add-to-cart-btn {
-    background: #007bff;
-    color: white;
-    border: none;
+    background: linear-gradient(120deg, #f7f8fa 0%, #ececec 100%);
+    color: #1d1d1f;
+    border: 1.5px solid #e0e0e5;
     padding: 1rem 2rem;
-    border-radius: 8px;
+    border-radius: 999px;
     font-size: 1.1rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background 0.18s, color 0.18s, border 0.18s, box-shadow 0.18s;
+    box-shadow: 0 2px 8px #0001;
+    font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    letter-spacing: -0.5px;
+    margin-top: 0.5rem;
 }
 
 .add-to-cart-btn:hover {
-    background: #0056b3;
+    background: #f5f5f7;
+    color: #e0e6ec;
+    border-color: #9b9c9d;
+    box-shadow: 0 8px 24px #0071e322;
 }
 
 .product-specifications {

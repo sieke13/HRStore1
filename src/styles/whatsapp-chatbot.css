@@ -1,0 +1,198 @@
+/* WhatsApp Chatbot Modern Floating Button & Window */
+.whatsapp-chatbot {
+  position: fixed;
+  bottom: 32px;
+  right: 24px;
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none; /* Permite que el botón no bloquee otros elementos */
+}
+
+.whatsapp-float-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25d366 60%, #128c7e 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 8px 32px rgba(37, 211, 102, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  margin-bottom: 0.5rem;
+  animation: pulse 1.8s infinite;
+  pointer-events: auto; /* El botón sí recibe eventos */
+  touch-action: manipulation;
+}
+.whatsapp-float-btn:active {
+  transform: scale(0.96);
+}
+.whatsapp-float-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 12px 40px rgba(37, 211, 102, 0.45);
+}
+
+.whatsapp-chat-window {
+  width: 340px;
+  max-width: 95vw;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  overflow: hidden;
+  z-index: 1301;
+  border: 2px solid #25d366;
+  animation: fadeIn 0.3s;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #25d366 60%, #128c7e 100%);
+  color: #fff;
+  padding: 1rem 1.2rem;
+}
+.chat-header-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.chat-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(37,211,102,0.18);
+}
+.chat-title h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: #128c7e;
+}
+.chat-title span {
+  font-size: 0.85rem;
+  color: #25d366;
+  font-weight: 600;
+}
+.chat-close {
+  background: none;
+  border: none;
+  color: #128c7e;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.chat-close:hover {
+  color: #ef4444;
+}
+
+.chat-body {
+  padding: 1.2rem;
+  background: #f8fafc;
+}
+.chat-message.bot-message {
+  background: #e0f7ec;
+  color: #128c7e;
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1.2rem;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(37,211,102,0.08);
+}
+
+.chat-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.chat-option {
+  flex: 1 1 140px;
+  min-width: 120px;
+  background: #fff;
+  border: 1.5px solid #25d366;
+  border-radius: 10px;
+  color: #128c7e;
+  font-weight: 600;
+  font-size: 0.98rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(37,211,102,0.06);
+}
+.chat-option:hover {
+  background: #e0f7ec;
+  color: #128c7e;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.12);
+}
+.option-icon {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.chat-footer-info {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 600px) {
+  .whatsapp-chatbot {
+    bottom: 12px;
+    right: 12px;
+    left: auto;
+    width: auto;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+  .whatsapp-float-btn {
+    width: 56px;
+    height: 56px;
+    font-size: 1.7rem;
+    margin-bottom: 0;
+    margin-right: 0;
+    margin-left: 0;
+    pointer-events: auto;
+    box-shadow: 0 6px 24px rgba(37, 211, 102, 0.32);
+  }
+  .whatsapp-chat-window {
+    width: 99vw;
+    min-width: 0;
+    max-width: 99vw;
+    border-radius: 12px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+  }
+}
+
+/* Asegura que el botón siempre esté visible sobre otros elementos */
+.whatsapp-float-btn {
+  z-index: 1400;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(37,211,102,0.25); }
+  70% { box-shadow: 0 0 0 16px rgba(37,211,102,0); }
+  100% { box-shadow: 0 0 0 0 rgba(37,211,102,0.25); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}

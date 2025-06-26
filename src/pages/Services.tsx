@@ -246,30 +246,7 @@ const Services: React.FC = () => {
                 </div>
             </section>
 
-            {/* CTA Section */}
-            <section className="services-cta">
-                <div className="container">
-                    <div className="cta-content">
-                        <h2>¿Necesitas reparar tu smartphone?</h2>
-                        <p>Contáctanos ahora y obtén un diagnóstico gratuito</p>
-                        <div className="cta-buttons">
-                            <a 
-                                href="https://wa.me/5551234567?text=Hola,%20necesito%20una%20cotización%20para%20reparación"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="cta-btn whatsapp-btn"
-                            >
-                                <FaWhatsapp /> WhatsApp
-                            </a>                            <button 
-                                className="cta-btn secondary-btn"
-                                onClick={() => window.location.href = '/products'}
-                            >
-                                Ver Productos
-                            </button>
-                        </div>                    </div>
-                </div>
-            </section>
-            
+           
             {/* WhatsApp Chatbot */}
             <WhatsAppChatbot />
         </div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FaWhatsapp, FaTimes, FaPhone, FaQuestionCircle, FaTools, FaShoppingCart } from 'react-icons/fa';
+import { FaTimes, FaPhone, FaQuestionCircle, FaTools, FaShoppingCart } from 'react-icons/fa';
+import WhatsAppBotIcon from './WhatsAppBotIcon';
 
 interface ChatOption {
     id: string;
@@ -63,7 +64,7 @@ const WhatsAppChatbot: React.FC = () => {
                 onClick={toggleChat}
                 aria-label="Abrir chat de WhatsApp"
             >
-                {isOpen ? <FaTimes /> : <FaWhatsapp />}
+                {isOpen ? <FaTimes /> : <WhatsAppBotIcon size={38} />}
             </button>
 
             {/* Chat window */}
@@ -72,7 +73,7 @@ const WhatsAppChatbot: React.FC = () => {
                     <div className="chat-header">
                         <div className="chat-header-info">
                             <div className="chat-avatar">
-                                <FaWhatsapp />
+                                <WhatsAppBotIcon size={28} />
                             </div>
                             <div className="chat-title">
                                 <h4>HRStore Soporte</h4>
