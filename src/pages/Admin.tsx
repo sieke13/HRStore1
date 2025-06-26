@@ -128,12 +128,16 @@ const Admin: React.FC = () => {
     const file = e.target.files?.[0];
     if (file) {
       const filePath = `${Date.now()}_${file.name}`;
-      const { error } = await supabase.storage.from('product-images').upload(filePath, file, { upsert: true });
+      const { error } = await supabase.storage.from('product-images').upload(filePath, file, {
+        upsert: true,
+        cacheControl: '3600',
+        contentType: file.type
+      });
       if (!error) {
         const { data } = supabase.storage.from('product-images').getPublicUrl(filePath);
         setProductForm(prev => ({ ...prev, image: data.publicUrl }));
       } else {
-        alert('Error subiendo la imagen.');
+        alert('Error subiendo la imagen: ' + error.message);
       }
     }
   };
