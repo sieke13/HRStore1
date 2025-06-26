@@ -237,16 +237,17 @@ nav a:hover, .main-navigation .nav-link:hover {
 .products-grid, .brands-grid, .features-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 2.5rem;
-  margin: 2.5rem 0;
+  gap: 2rem;
 }
 
-.product-image img, .brand-card img {
+.product-image img,
+.product-suggestion-img {
   max-width: 100%;
-  max-height: 110px;
-  object-fit: contain;
-  margin: 0 auto 1rem auto;
+  height: auto;
   display: block;
+  margin: 0 auto;
+  object-fit: contain;
+  border-radius: 0.7rem;
 }
 
 .product-badge {
@@ -953,6 +954,7 @@ nav a:hover, .main-navigation .nav-link:hover {
 }
 
 .product-suggestion-link:hover {
+  background: #f5f5f7;
   background: #f5f5f7;
   color: #0071e3;
 }

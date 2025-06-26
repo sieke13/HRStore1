@@ -290,9 +290,7 @@ const Home: React.FC = () => {
                                 <p className="made-by" style={{ color: "#86868b" }}>Made with ❤️ by <strong>Sieke</strong></p>
                             </div>
                             <div className="footer-links">
-                                <a href="#privacy">Política de Privacidad</a>
-                                <a href="#terms">Términos y Condiciones</a>
-                                <a href="#security">Seguridad</a>
+
                             </div>
                         </div>
                     </div>
