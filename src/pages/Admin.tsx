@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/admin.css';
+import { supabase } from '../supabase';
 
 interface Product {
   id: string;
@@ -56,106 +57,47 @@ const Admin: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
   useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = () => {
-    const savedProducts = localStorage.getItem('hrstore_products');
+    loadProducts();
+    // Orders and settings remain local for now
     const savedOrders = localStorage.getItem('hrstore_orders');
     const savedSettings = localStorage.getItem('hrstore_settings');
+    if (savedOrders) setOrders(JSON.parse(savedOrders));
+    if (savedSettings) setSettings(JSON.parse(savedSettings));
+  }, []);
 
-    if (savedProducts) {
-      setProducts(JSON.parse(savedProducts));
-    } else {
-      // Productos de ejemplo
-      const exampleProducts: Product[] = [
-        {
-          id: '1',
-          name: 'Reparación Pantalla iPhone',
-          price: 299.99,
-          category: 'reparaciones',
-          description: 'Reparación completa de pantalla para iPhone',
-          image: '/src/assets/images/iphone-repair.svg',
-          stock: 10,
-          createdAt: new Date().toISOString()
-        },
-        {
-          id: '2',
-          name: 'Reparación Pantalla Android',
-          price: 199.99,
-          category: 'reparaciones',
-          description: 'Reparación de pantalla para dispositivos Android',
-          image: '/src/assets/images/android-repair.svg',
-          stock: 15,
-          createdAt: new Date().toISOString()
-        }
-      ];
-      setProducts(exampleProducts);
-      localStorage.setItem('hrstore_products', JSON.stringify(exampleProducts));
-    }
-
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
-    }
-
-    if (savedSettings) {
-      setSettings(JSON.parse(savedSettings));
-    }
+  // Fetch products from Supabase
+  const loadProducts = async () => {
+    const { data, error } = await supabase.from('products').select('*').order('createdAt', { ascending: false });
+    if (!error && data) setProducts(data as Product[]);
   };
 
-  const saveProducts = (newProducts: Product[]) => {
-    setProducts(newProducts);
-    localStorage.setItem('hrstore_products', JSON.stringify(newProducts));
-  };
-
-
-  const saveSettings = (newSettings: Settings) => {
-    setSettings(newSettings);
-    localStorage.setItem('hrstore_settings', JSON.stringify(newSettings));
-  };  const handleAddProduct = (e: React.FormEvent) => {
+  // Add or update product in Supabase
+  const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (editingProduct) {
-      // Editar producto existente
-      const updatedProducts = products.map(p => 
-        p.id === editingProduct.id 
-          ? { ...editingProduct, ...productForm }
-          : p
-      );
-      saveProducts(updatedProducts);
-      setEditingProduct(null);
-      alert('Producto actualizado exitosamente!');
+      // Update existing product
+      const { error } = await supabase.from('products').update({ ...productForm }).eq('id', editingProduct.id);
+      if (!error) {
+        setEditingProduct(null);
+        alert('Producto actualizado exitosamente!');
+      }
     } else {
-      // Agregar nuevo producto
-      const newProduct: Product = {
+      // Add new product
+      const newProduct = {
         ...productForm,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        stock: productForm.stock || 0
       };
-      
-      // Agregar el nuevo producto
-      const updatedProducts = [...products, newProduct];
-      saveProducts(updatedProducts);
-      
-      // Disparar evento personalizado para notificar a Home que se agregó un producto nuevo
-      window.dispatchEvent(new CustomEvent('productAdded', { 
-        detail: { product: newProduct, allProducts: updatedProducts } 
-      }));
-      
-      alert(`Producto "${newProduct.name}" agregado exitosamente! Ahora aparecerá destacado en Home con badge "Nuevo" y también en /products`);
+      const { error } = await supabase.from('products').insert([newProduct]);
+      if (!error) {
+        alert(`Producto "${productForm.name}" agregado exitosamente! Ahora aparecerá destacado en Home con badge "Nuevo" y también en /products`);
+      }
     }
-
-    // Limpiar formulario
-    setProductForm({
-      name: '',
-      price: 0,
-      category: '',
-      description: '',
-      image: '',
-      stock: 0
-    });
+    setProductForm({ name: '', price: 0, category: '', description: '', image: '', stock: 0 });
+    loadProducts();
   };
 
+  // Edit product (populate form)
   const handleEditProduct = (product: Product) => {
     setEditingProduct(product);
     setProductForm({
@@ -168,26 +110,31 @@ const Admin: React.FC = () => {
     });
     setActiveTab('add-product');
   };
-  const handleDeleteProduct = (productId: string) => {
+
+  // Delete product from Supabase
+  const handleDeleteProduct = async (productId: string) => {
     const product = products.find(p => p.id === productId);
     if (window.confirm(`¿Estás seguro de eliminar "${product?.name}"? Este producto también se eliminará de la página de productos.`)) {
-      const updatedProducts = products.filter(p => p.id !== productId);
-      saveProducts(updatedProducts);
-      alert('Producto eliminado exitosamente!');
+      const { error } = await supabase.from('products').delete().eq('id', productId);
+      if (!error) {
+        alert('Producto eliminado exitosamente!');
+        loadProducts();
+      }
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Upload image to Supabase Storage and get URL
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProductForm(prev => ({
-          ...prev,
-          image: e.target?.result as string
-        }));
-      };
-      reader.readAsDataURL(file);
+      const filePath = `${Date.now()}_${file.name}`;
+      const { error } = await supabase.storage.from('product-images').upload(filePath, file, { upsert: true });
+      if (!error) {
+        const { data } = supabase.storage.from('product-images').getPublicUrl(filePath);
+        setProductForm(prev => ({ ...prev, image: data.publicUrl }));
+      } else {
+        alert('Error subiendo la imagen.');
+      }
     }
   };
 
@@ -388,7 +335,7 @@ const Admin: React.FC = () => {
       <h2>Configuración</h2>
       <form onSubmit={(e) => {
         e.preventDefault();
-        saveSettings(settings);
+        localStorage.setItem('hrstore_settings', JSON.stringify(settings));
         alert('Configuración guardada exitosamente');
       }}>
         <div className="form-group">
