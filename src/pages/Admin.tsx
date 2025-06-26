@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/admin.css';
-import { supabase } from '../supabase';
 
 interface Product {
   id: string;
@@ -35,6 +34,11 @@ interface Settings {
   currency: string;
 }
 
+const API_URL =
+  import.meta.env.DEV
+    ? '/.netlify/functions/products'
+    : '/api/products';
+
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [products, setProducts] = useState<Product[]>([]);
@@ -65,31 +69,48 @@ const Admin: React.FC = () => {
     if (savedSettings) setSettings(JSON.parse(savedSettings));
   }, []);
 
-  // Fetch products from Supabase
+  // Fetch products from Netlify Function
   const loadProducts = async () => {
-    const { data, error } = await supabase.from('products').select('*').order('createdAt', { ascending: false });
-    if (!error && data) setProducts(data as Product[]);
+    const res = await fetch(API_URL);
+    if (res.ok) {
+      const data = await res.json();
+      setProducts(data.products); // Use the array, not the object
+    }
   };
 
-  // Add or update product in Supabase
+  // Add or update product using Netlify Function
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingProduct) {
       // Update existing product
-      const { error } = await supabase.from('products').update({ ...productForm }).eq('id', editingProduct.id);
-      if (!error) {
+      const res = await fetch(API_URL, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editingProduct.id, ...productForm }),
+      });
+      if (res.ok) {
         setEditingProduct(null);
         alert('Producto actualizado exitosamente!');
       }
     } else {
       // Add new product
       const newProduct = {
-        ...productForm,
+        name: productForm.name,
+        price: Number(productForm.price),
+        category: productForm.category,
+        description: productForm.description,
+        image: productForm.image,
+        stock: Number(productForm.stock),
         createdAt: new Date().toISOString(),
-        stock: productForm.stock || 0
       };
-      const { error } = await supabase.from('products').insert([newProduct]);
-      if (!error) {
+      console.log('Submitting product:', newProduct);
+      Object.entries(newProduct).forEach(([k, v]) => console.log(`${k}:`, v, typeof v));
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newProduct),
+      });
+      if (res.ok) {
         alert(`Producto "${productForm.name}" agregado exitosamente! Ahora aparecerá destacado en Home con badge "Nuevo" y también en /products`);
       }
     }
@@ -106,38 +127,49 @@ const Admin: React.FC = () => {
       category: product.category,
       description: product.description,
       image: product.image,
-      stock: product.stock
+      stock: product.stock,
     });
     setActiveTab('add-product');
   };
 
-  // Delete product from Supabase
+  // Delete product using Netlify Function
   const handleDeleteProduct = async (productId: string) => {
     const product = products.find(p => p.id === productId);
     if (window.confirm(`¿Estás seguro de eliminar "${product?.name}"? Este producto también se eliminará de la página de productos.`)) {
-      const { error } = await supabase.from('products').delete().eq('id', productId);
-      if (!error) {
+      const res = await fetch(API_URL, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: productId }),
+      });
+      if (res.ok) {
         alert('Producto eliminado exitosamente!');
         loadProducts();
       }
     }
   };
 
-  // Upload image to Supabase Storage and get URL
+  // Upload image to Cloudinary and get URL
+  const uploadImageToCloudinary = async (file: File): Promise<string | null> => {
+    const url = 'https://api.cloudinary.com/v1_1/dsreqg20l/image/upload';
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'hrstore_unsigned'); // Use your actual unsigned preset
+    const res = await fetch(url, { method: 'POST', body: formData });
+    if (res.ok) {
+      const data = await res.json();
+      return data.secure_url;
+    }
+    return null;
+  };
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const filePath = `${Date.now()}_${file.name}`;
-      const { error } = await supabase.storage.from('product-images').upload(filePath, file, {
-        upsert: true,
-        cacheControl: '3600',
-        contentType: file.type
-      });
-      if (!error) {
-        const { data } = supabase.storage.from('product-images').getPublicUrl(filePath);
-        setProductForm(prev => ({ ...prev, image: data.publicUrl }));
+      const url = await uploadImageToCloudinary(file);
+      if (url) {
+        setProductForm(prev => ({ ...prev, image: url }));
       } else {
-        alert('Error subiendo la imagen: ' + error.message);
+        alert('Error subiendo la imagen');
       }
     }
   };
@@ -211,7 +243,7 @@ const Admin: React.FC = () => {
             type="text"
             id="name"
             value={productForm.name}
-            onChange={(e) => setProductForm(prev => ({ ...prev, name: e.target.value }))}
+            onChange={e => setProductForm(prev => ({ ...prev, name: e.target.value }))}
             required
           />
         </div>

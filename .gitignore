@@ -29,3 +29,6 @@ npm-debug.log*
 
 # MercadoPago credentials (security)
 mercadopago-credentials.txt
+
+# Local Netlify folder
+.netlify

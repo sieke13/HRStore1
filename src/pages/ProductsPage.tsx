@@ -14,7 +14,8 @@ interface ProductsPageProps {
 }
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
-  const { products, refreshProducts } = useProducts();  const { 
+  const { products, setProducts, refreshProducts } = useProducts();
+  const { 
     cartItems, 
     isCartOpen, 
     addToCart, 

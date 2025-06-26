@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../supabase';
 
 export interface Product {
   id: string;
@@ -12,6 +11,11 @@ export interface Product {
   createdAt: string;
 }
 
+const API_URL =
+  import.meta.env.DEV
+    ? '/.netlify/functions/products'
+    : '/api/products';
+
 export const useProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -19,37 +23,48 @@ export const useProducts = () => {
     loadProducts();
   }, []);
 
-  // Fetch all products from Supabase
+  // Fetch all products from Netlify Function
   const loadProducts = async () => {
-    const { data, error } = await supabase.from('products').select('*').order('createdAt', { ascending: false });
-    if (!error && data) setProducts(data as Product[]);
+    const res = await fetch(API_URL);
+    if (res.ok) {
+      const data = await res.json();
+      setProducts(data);
+    }
   };
 
-  // Add a product to Supabase
+  // Add a product
   const addProduct = async (product: Omit<Product, 'id' | 'createdAt'>) => {
-    const newProduct = {
-      ...product,
-      createdAt: new Date().toISOString(),
-      stock: product.stock || 0
-    };
-    const { data, error } = await supabase.from('products').insert([newProduct]).select();
-    if (!error && data && data[0]) {
-      setProducts(prev => [data[0], ...prev]);
-      return data[0];
+    const res = await fetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(product),
+    });
+    if (res.ok) {
+      const newProduct = await res.json();
+      setProducts(prev => [newProduct, ...prev]);
+      return newProduct;
     }
     return null;
   };
 
-  // Update a product in Supabase
+  // Update a product
   const updateProduct = async (id: string, updatedProduct: Partial<Product>) => {
-    const { error } = await supabase.from('products').update(updatedProduct).eq('id', id);
-    if (!error) loadProducts();
+    const res = await fetch(API_URL, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, ...updatedProduct }),
+    });
+    if (res.ok) loadProducts();
   };
 
-  // Delete a product from Supabase
+  // Delete a product
   const deleteProduct = async (id: string) => {
-    const { error } = await supabase.from('products').delete().eq('id', id);
-    if (!error) setProducts(prev => prev.filter(p => p.id !== id));
+    const res = await fetch(API_URL, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    if (res.ok) setProducts(prev => prev.filter(p => p.id !== id));
   };
 
   const getProductsByCategory = (category: string) => {
@@ -65,7 +80,7 @@ export const useProducts = () => {
   };
 
   const getRecentProducts = (limit: number = 4) => {
-    const sortedProducts = [...products].sort((a, b) => 
+    const sortedProducts = [...products].sort((a, b) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     );
     return sortedProducts.slice(0, limit);
@@ -89,6 +104,6 @@ export const useProducts = () => {
     getProductById,
     getRecentProducts,
     isNewProduct,
-    refreshProducts
+    refreshProducts,
   };
 };

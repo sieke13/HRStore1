@@ -4,7 +4,7 @@ import { useCart } from '../hooks/useCart';
 import Header from '../components/Header';
 import CartSidebar from '../components/CartSidebar';
 import WhatsAppChatbot from '../components/WhatsAppChatbot';
-import { supabase } from '../supabase';
+
 import '../styles/product-detail.css';
 
 interface ProductDetailProps {
@@ -32,12 +32,19 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {  const 
       setProduct(foundProduct);
       setSelectedImage(foundProduct.image);
     } else {
-      // Fetch from Supabase if not found in products array
+      // Fetch from Netlify Function if not found in products array
       (async () => {
-        const { data, error } = await supabase.from('products').select('*').eq('id', productId).single();
-        if (!error && data) {
-          setProduct(data);
-          setSelectedImage(data.image);
+        try {
+          const res = await fetch(`/.netlify/functions/products?id=${productId}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.product) {
+              setProduct(data.product);
+              setSelectedImage(data.product.image);
+            }
+          }
+        } catch {
+          // Optionally handle error (e.g., show error message)
         }
       })();
     }
