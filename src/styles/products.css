@@ -237,14 +237,28 @@
   margin-bottom: 1.2rem;
 }
 
+/* Make product images responsive */
 .product-image img,
+.product-preview img,
 .product-suggestion-img {
+  width: 100%;
   max-width: 100%;
   height: auto;
+  max-height: 120px;
+  object-fit: contain;
   display: block;
   margin: 0 auto;
-  object-fit: contain;
   border-radius: 0.7rem;
+  background: #f7f8fa;
+}
+
+/* On mobile, reduce max-height for better fit */
+@media (max-width: 600px) {
+  .product-image img,
+  .product-preview img,
+  .product-suggestion-img {
+    max-height: 70px;
+  }
 }
 
 .product-title {
