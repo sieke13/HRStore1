@@ -104,7 +104,7 @@ const Cart: React.FC<CartProps> = ({
                       <img src={item.image} alt={item.name} />
                     </div>
                     <div className="item-details">                      <h4 className="item-name">{item.name}</h4>
-                      <p className="item-price">$MX {(item.price || 0).toFixed(2)}</p>
+                      <p className="item-price">$MX {Number(item.price || 0).toFixed(2)}</p>
                       <div className="item-controls">
                         <div className="quantity-controls">
                           <button 
@@ -134,7 +134,7 @@ const Cart: React.FC<CartProps> = ({
                       </div>
                     </div>
                     <div className="item-total">
-                      $MX {((item.price || 0) * (item.quantity || 0)).toFixed(2)}
+                      $MX {((Number(item.price) || 0) * (item.quantity || 0)).toFixed(2)}
                     </div>
                   </div>
                 ))}
@@ -144,7 +144,7 @@ const Cart: React.FC<CartProps> = ({
               <div className="cart-summary">
                 <div className="summary-row">
                   <span>Subtotal:</span>
-                  <span>$MX {getTotalPrice().toFixed(2)}</span>
+                  <span>$MX {Number(getTotalPrice()).toFixed(2)}</span>
                 </div>
                 <div className="summary-row">
                   <span>Envío:</span>
@@ -152,7 +152,7 @@ const Cart: React.FC<CartProps> = ({
                 </div>
                 <div className="summary-total">
                   <span>Total:</span>
-                  <span>$MX {getTotalPrice().toFixed(2)}</span>
+                  <span>$MX {Number(getTotalPrice()).toFixed(2)}</span>
                 </div>
               </div>
 

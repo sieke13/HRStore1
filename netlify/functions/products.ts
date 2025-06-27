@@ -1,5 +1,8 @@
 import { Client } from 'pg';
 
+// Debug: print the connection string (mask before sharing logs!)
+console.log('DEBUG NEON_DATABASE_URL:', process.env.NEON_DATABASE_URL);
+
 // Neon Postgres connection string from environment variable
 const connectionString = process.env.NEON_DATABASE_URL!;
 
