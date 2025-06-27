@@ -228,7 +228,8 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
           items={cartItems.map((item, idx) => ({
             ...item,
             title: item.name,
-            id: typeof item.id === 'number' ? item.id : idx
+            id: typeof item.id === 'number' ? item.id : idx,
+            price: Number(item.price) || 0
           }))}
         />
       )}
