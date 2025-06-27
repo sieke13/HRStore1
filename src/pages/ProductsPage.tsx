@@ -105,6 +105,13 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
     if (category === 'all') return safeProducts.length;
     return safeProducts.filter(product => product.category === category).length;
   };
+
+  // Add this function to open the payment modal and close the sidebar
+  const handleCheckout = () => {
+    setShowPaymentModal(true);
+    closeCart();
+  };
+
   return (
     <div className="products-page">
       <Header />
@@ -218,7 +225,11 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
         <Cart
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
-          items={cartItems}
+          items={cartItems.map((item, idx) => ({
+            ...item,
+            title: item.name,
+            id: typeof item.id === 'number' ? item.id : idx
+          }))}
         />
       )}
       
