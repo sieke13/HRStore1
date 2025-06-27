@@ -9,7 +9,6 @@ interface Product {
   description: string;
   image: string;
   stock: number;
-  createdAt: string;
 }
 
 interface Order {
@@ -34,7 +33,10 @@ interface Settings {
   currency: string;
 }
 
-const API_URL = '/.netlify/functions/products';
+const API_URL =
+  import.meta.env.NODE_ENV === 'development'
+    ? 'http://localhost:8888/.netlify/functions/products'
+    : '/.netlify/functions/products';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -68,10 +70,19 @@ const Admin: React.FC = () => {
 
   // Fetch products from Netlify Function
   const loadProducts = async () => {
-    const res = await fetch(API_URL);
-    if (res.ok) {
+    try {
+      const res = await fetch(API_URL, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) {
+        throw new Error('Failed to fetch products');
+      }
       const data = await res.json();
+      console.log('DEBUG products from backend:', data.products); // Debug log
       setProducts(data.products); // Use the array, not the object
+    } catch (error) {
+      console.error('Error fetching products:', error);
     }
   };
 
@@ -103,7 +114,6 @@ const Admin: React.FC = () => {
         description: productForm.description,
         image: productForm.image, // this should be the Cloudinary URL
         stock: Number(productForm.stock),
-        createdAt: new Date().toISOString(),
       };
       console.log('Submitting product:', newProduct);
       Object.entries(newProduct).forEach(([k, v]) => console.log(`${k}:`, v, typeof v));
@@ -112,6 +122,8 @@ const Admin: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newProduct),
       });
+      const payload = await res.json();
+      console.log('API Response:', res.status, payload);
       if (res.ok) {
         alert(`Producto "${productForm.name}" agregado exitosamente! Ahora aparecerá destacado en Home con badge "Nuevo" y también en /products`);
       }
@@ -359,7 +371,6 @@ const Admin: React.FC = () => {
               <div className="order-details">
                 <p><strong>Cliente:</strong> {order.customerName}</p>
                 <p><strong>Email:</strong> {order.customerEmail}</p>                <p><strong>Total:</strong> $MX {order.total}</p>
-                <p><strong>Fecha:</strong> {new Date(order.createdAt).toLocaleDateString()}</p>
               </div>
             </div>
           ))

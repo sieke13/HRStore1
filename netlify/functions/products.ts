@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import { text } from 'stream/consumers';
 
 // Neon Postgres connection string from environment variable
 const connectionString = process.env.NEON_DATABASE_URL!;
@@ -14,21 +15,41 @@ const handler = async (event: any): Promise<Response> => {
 
     if (method === 'GET') {
       // Get all products
-      const result = await client.query('SELECT * FROM products ORDER BY createdAt DESC');
+      const result = await client.query('SELECT * FROM products ORDER BY id DESC');
       data = result.rows;
     } else if (method === 'POST') {
       // Add a new product
-      let rawBody = event.body;
-      if (typeof rawBody !== 'string') {
-        rawBody = JSON.stringify(rawBody);
-      }
-      console.log('RAW BODY:', rawBody);
+      console.log('DEBUG event.body:', event.body);
+      console.log('DEBUG event.headers:', event.headers);
       let parsed;
-      try {
-        parsed = JSON.parse(rawBody);
-      } catch (err) {
+      let rawBody = event.body;
+      if (rawBody && typeof rawBody.getReader === 'function') {
+        // Netlify Dev (local) sends a ReadableStream
+        const reader = rawBody.getReader();
+        let chunks = [];
+        let done, value;
+        while (({ done, value } = await reader.read(), !done)) {
+          chunks.push(...value);
+        }
+        rawBody = new TextDecoder().decode(Uint8Array.from(chunks));
+      }
+      if (typeof rawBody === 'string' && rawBody.trim() !== '') {
+        try {
+          parsed = JSON.parse(rawBody);
+        } catch (err) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid JSON in request body', raw: rawBody }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
+        }
+      } else if (typeof rawBody === 'object' && rawBody !== null) {
+        parsed = rawBody;
+      } else {
         return new Response(
-          JSON.stringify({ error: 'Invalid JSON in request body', raw: rawBody }),
+          JSON.stringify({ error: 'Empty or invalid request body', raw: rawBody }),
           {
             status: 400,
             headers: { 'Content-Type': 'application/json' }
@@ -37,14 +58,30 @@ const handler = async (event: any): Promise<Response> => {
       }
       const { name, price, category, description, image, stock } = parsed;
       // Backend validation: all fields required
-      if (!name || !price || !category || !description || !image || !stock) {
+      console.log('DEBUG parsed:', { name, price, category, description, image, stock });
+      console.log('DEBUG typeof:', {
+        name: typeof name,
+        price: typeof price,
+        category: typeof category,
+        description: typeof description,
+        image: typeof image,
+        stock: typeof stock
+      });
+      if (
+        typeof name        !== 'string'  || name.trim()        === '' ||
+        typeof price       !== 'number'  || isNaN(price)              ||
+        typeof category    !== 'string'  || category.trim()    === '' ||
+        typeof description !== 'string'  || description.trim() === '' ||
+        typeof image       !== 'string'  || image.trim()       === '' ||
+        typeof stock       !== 'number'  || isNaN(stock)
+      ) {
         return new Response(
-          JSON.stringify({ error: 'All fields are required.' }),
-          { status: 400, headers: { 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: 'Faltan campos o tipos inválidos.' }),
+          { status: 400, headers: { 'Content-Type': 'application/json' }}
         );
       }
       const result = await client.query(
-        'INSERT INTO products (name, price, category, description, image, stock, createdAt) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *',
+        'INSERT INTO products (name, price, category, description, image, stock) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
         [name, price, category, description, image, stock]
       );
       data = result.rows[0];
