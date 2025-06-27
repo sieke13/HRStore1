@@ -1,5 +1,4 @@
 import { Client } from 'pg';
-import { text } from 'stream/consumers';
 
 // Neon Postgres connection string from environment variable
 const connectionString = process.env.NEON_DATABASE_URL!;
