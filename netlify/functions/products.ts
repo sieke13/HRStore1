@@ -100,7 +100,20 @@ const handler = async (event: any): Promise<Response> => {
       data = result.rows[0];
     } else if (method === 'DELETE') {
       // Delete a product
-      const { id } = JSON.parse(event.body);
+      let parsedDelete;
+      try {
+        parsedDelete = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
+      } catch (err) {
+        console.error('DELETE: Failed to parse body', event.body, err);
+        return new Response(
+          JSON.stringify({ error: 'Invalid JSON in request body for DELETE', raw: event.body }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
+      const { id } = parsedDelete || {};
       if (!id) {
         return new Response(
           JSON.stringify({ error: 'Missing product id for deletion' }),
@@ -110,7 +123,18 @@ const handler = async (event: any): Promise<Response> => {
           }
         );
       }
-      await client.query('DELETE FROM products WHERE id = $1', [id]);
+      try {
+        await client.query('DELETE FROM products WHERE id = $1', [id]);
+      } catch (err) {
+        console.error('DELETE: DB error', err);
+        return new Response(
+          JSON.stringify({ error: 'Database error during deletion', details: err.message }),
+          {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
       data = null;
     } else {
       return new Response(
