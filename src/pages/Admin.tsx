@@ -149,6 +149,7 @@ const Admin: React.FC = () => {
   // Delete product using Netlify Function
   const handleDeleteProduct = async (productId: string) => {
     const product = products.find(p => p.id === productId);
+    console.log('[Admin.tsx] Deleting productId:', productId, 'Body:', JSON.stringify({ id: productId }));
     if (window.confirm(`¿Estás seguro de eliminar "${product?.name}"? Este producto también se eliminará de la página de productos.`)) {
       const res = await fetch(API_URL, {
         method: 'DELETE',
