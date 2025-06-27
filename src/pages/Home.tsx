@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import Header from '../components/Header';
 import RepairSwiper from '../components/RepairSwiper';
 import BrandsCarousel from '../components/BrandsCarousel';
@@ -15,6 +14,7 @@ import TransferNewIcon from '../assets/icons/bank-transfer-professional.svg';
 
 const Home: React.FC = () => {
     const { products, getRecentProducts, isNewProduct, refreshProducts } = useProducts();
+    console.log('DEBUG: products from backend', products); // Debug log to check product data
     type Product = {
         id: string;
         name: string;
@@ -28,6 +28,9 @@ const Home: React.FC = () => {
     useEffect(() => {
         const recentProducts = getRecentProducts(4);
         setFeaturedProducts(recentProducts);
+        // Debug log: check what products are in state and what prices they have
+        console.log('[Home.tsx] products from useProducts:', products);
+        console.log('[Home.tsx] featuredProducts (recentProducts):', recentProducts);
     }, [products]);
 
     useEffect(() => {

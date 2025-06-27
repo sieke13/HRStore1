@@ -161,15 +161,15 @@ const Cart: React.FC<CartProps> = ({
                 <h4>💳 Métodos de Pago</h4>
                 <div className="payment-options">
                   <div className="payment-option">
-                    <img src="/src/assets/icons/mercadopago.svg" alt="MercadoPago" />
+                    <img src="/icons/mercadopago.svg" alt="MercadoPago" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
                     <span>MercadoPago</span>
                   </div>
                   <div className="payment-option">
-                    <img src="/src/assets/icons/paypal.svg" alt="PayPal" />
+                    <img src="/icons/paypal.svg" alt="PayPal" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
                     <span>PayPal</span>
                   </div>
                   <div className="payment-option">
-                    <img src="/src/assets/icons/visa.svg" alt="Visa" />
+                    <img src="/icons/visa.svg" alt="Visa" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
                     <span>Tarjetas</span>
                   </div>
                 </div>
