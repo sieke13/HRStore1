@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@mercadopago/sdk-react": "^1.0.3",
+    "@netlify/functions": "^4.1.8",
     "@paypal/paypal-server-sdk": "^1.1.0",
     "@paypal/react-paypal-js": "^8.8.3",
     "cors": "^2.8.5",
