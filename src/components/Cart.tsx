@@ -35,7 +35,7 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
   const createPreference = async () => {
     setLoading(true);
     try {
-      const response = await fetch('/api/create-preference', {
+      const response = await fetch('/.netlify/functions/create-preference', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
