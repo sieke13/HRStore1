@@ -7,6 +7,7 @@ import Header from '../components/Header';
 import BrandsCarousel from '../components/BrandsCarousel';
 import ProfessionalStats from '../components/ProfessionalStats';
 import WhatsAppChatbot from '../components/WhatsAppChatbot';
+import Cart from '../components/Cart';
 import '../styles/products.css';
 
 interface ProductsPageProps {
@@ -23,10 +24,10 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
     removeFromCart, 
     clearCart,
     closeCart, 
-    handleCheckout,
     getTotalItems 
   } = useCart();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   // Always use a safe array for products
   const safeProducts = useMemo(() => Array.isArray(products) ? products : [], [products]);
@@ -212,6 +213,14 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
         onClearCart={clearCart}
         onCheckout={handleCheckout}
       />
+      {/* Payment Modal */}
+      {showPaymentModal && (
+        <Cart
+          isOpen={showPaymentModal}
+          onClose={() => setShowPaymentModal(false)}
+          items={cartItems}
+        />
+      )}
       
       {/* WhatsApp Chatbot */}
       <WhatsAppChatbot />
