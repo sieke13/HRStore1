@@ -18,9 +18,27 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, image, title, price, onAd
 
     return (
         <div className="product-card" onClick={handleCardClick} style={{ cursor: 'pointer' }}>
-            <img src={image} alt={title} className="product-image" />
-            <h2 className="product-title">{title}</h2>
-            <p className="product-price">$MX {price.toFixed(2)}</p>
+            <img 
+                src={image || '/logo.svg'}
+                alt={title || 'Producto'}
+                className="product-image"
+                style={{
+                    width: '100%',
+                    height: 120,
+                    objectFit: 'contain',
+                    background: '#f9f9fa',
+                    borderRadius: 18,
+                    marginBottom: '1rem',
+                    display: 'block'
+                }}
+                onError={e => {
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== '/logo.svg') target.src = '/logo.svg';
+                }}
+                loading="lazy"
+            />
+            <h2 className="product-title">{title || 'Sin nombre'}</h2>
+            <p className="product-price">${typeof price === 'number' && !isNaN(price) ? price.toFixed(2) : '0.00'} MXN</p>
             <button 
                 onClick={(e) => {
                     e.stopPropagation();

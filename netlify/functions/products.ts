@@ -36,6 +36,13 @@ const handler = async (event: any): Promise<Response> => {
         );
       }
       const { name, price, category, description, image, stock } = parsed;
+      // Backend validation: all fields required
+      if (!name || !price || !category || !description || !image || !stock) {
+        return new Response(
+          JSON.stringify({ error: 'All fields are required.' }),
+          { status: 400, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
       const result = await client.query(
         'INSERT INTO products (name, price, category, description, image, stock, createdAt) VALUES ($1, $2, $3, $4, $5, $6, NOW()) RETURNING *',
         [name, price, category, description, image, stock]
@@ -55,6 +62,15 @@ const handler = async (event: any): Promise<Response> => {
     } else if (method === 'DELETE') {
       // Delete a product
       const { id } = JSON.parse(event.body);
+      if (!id) {
+        return new Response(
+          JSON.stringify({ error: 'Missing product id for deletion' }),
+          {
+            status: 400,
+            headers: { 'Content-Type': 'application/json' }
+          }
+        );
+      }
       await client.query('DELETE FROM products WHERE id = $1', [id]);
       data = null;
     } else {

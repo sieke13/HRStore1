@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useProducts } from '../hooks/useProducts';
 import { useCart } from '../hooks/useCart';
 import ProductCard from '../components/ProductCard';
@@ -14,7 +14,7 @@ interface ProductsPageProps {
 }
 
 const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
-  const { products, setProducts, refreshProducts } = useProducts();
+  const { products, refreshProducts } = useProducts();
   const { 
     cartItems, 
     isCartOpen, 
@@ -23,30 +23,41 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
     removeFromCart, 
     clearCart,
     closeCart, 
-    
     handleCheckout,
     getTotalItems 
   } = useCart();
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [filteredProducts, setFilteredProducts] = useState(products);
+
+  // Always use a safe array for products
+  const safeProducts = useMemo(() => Array.isArray(products) ? products : [], [products]);
+  const [filteredProducts, setFilteredProducts] = useState(safeProducts);
 
   useEffect(() => {
     // Refrescar productos cuando la página se carga
     refreshProducts();
-  }, []);
+
+    // Escuchar evento de producto agregado para recargar productos automáticamente
+    const handleProductAdded = () => {
+      refreshProducts();
+    };
+    window.addEventListener('productAdded', handleProductAdded as EventListener);
+    return () => {
+      window.removeEventListener('productAdded', handleProductAdded as EventListener);
+    };
+  }, []); // Only run once on mount
   useEffect(() => {
     if (selectedCategory === 'all') {
-      setFilteredProducts(products);
+      setFilteredProducts(safeProducts);
     } else {
-      setFilteredProducts(products.filter(product => product.category === selectedCategory));
+      setFilteredProducts(safeProducts.filter(product => product.category === selectedCategory));
     }
-  }, [products, selectedCategory]);
+  }, [safeProducts, selectedCategory]);
 
   // Efecto para enfocar un producto específico si se proporciona
   useEffect(() => {
-    if (focusProduct && products.length > 0) {
+    if (focusProduct && safeProducts.length > 0) {
       // Buscar el producto específico
-      const product = products.find(p => p.id === focusProduct);
+      const product = safeProducts.find(p => p.id === focusProduct);
       if (product) {
         // Mostrar todos los productos o filtrar por categoría si es necesario
         setSelectedCategory('all');
@@ -67,7 +78,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
         }, 100);
       }
     }
-  }, [focusProduct, products]);
+  }, [focusProduct, safeProducts]);
 
   const categories = [
     { value: 'all', label: 'Todos los Productos' },
@@ -75,8 +86,9 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
     { value: 'accesorios', label: 'Accesorios' },
     { value: 'componentes', label: 'Componentes' },
     { value: 'servicios', label: 'Servicios' }
-  ];  const handleAddToCart = (productId: string) => {
-    const product = products.find(p => p.id === productId);
+  ];
+  const handleAddToCart = (productId: string) => {
+    const product = safeProducts.find(p => p.id === productId);
     if (product) {
       addToCart({
         id: product.id,
@@ -89,9 +101,10 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
   };
 
   const getProductCountByCategory = (category: string) => {
-    if (category === 'all') return products.length;
-    return products.filter(product => product.category === category).length;
-  };  return (
+    if (category === 'all') return safeProducts.length;
+    return safeProducts.filter(product => product.category === category).length;
+  };
+  return (
     <div className="products-page">
       <Header />
       
@@ -106,7 +119,7 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
           <h1>Nuestros Productos y Servicios</h1>
           <p>Encuentra los mejores servicios de reparación y accesorios para tu dispositivo</p>
           <div className="products-stats">
-            <span className="total-products">Total: {products.length} productos disponibles</span>
+            <span className="total-products">Total: {safeProducts.length} productos disponibles</span>
           </div>
         </div>
 

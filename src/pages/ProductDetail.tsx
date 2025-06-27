@@ -323,9 +323,36 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {  const 
 
         <div className="product-detail-content">
           <div className="product-images">
-            <div className="main-image">
-              <img src={selectedImage} alt={product.name} />
-            </div>
+            <div className="main-image" style={{
+    width: 320,
+    height: 320,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: '#f9f9fa',
+    borderRadius: 24,
+    overflow: 'hidden',
+    marginBottom: 24,
+}}>
+    <img
+        src={selectedImage || '/logo.svg'}
+        alt={product.name || 'Producto'}
+        style={{
+            width: 'auto',
+            height: '100%',
+            maxWidth: '100%',
+            maxHeight: '100%',
+            objectFit: 'contain',
+            display: 'block',
+            margin: '0 auto'
+        }}
+        onError={e => {
+            const target = e.target as HTMLImageElement;
+            if (target.src !== '/logo.svg') target.src = '/logo.svg';
+        }}
+        loading="lazy"
+    />
+</div>
             <div className="image-thumbnails">
               <img 
                 src={product.image} 

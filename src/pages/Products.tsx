@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BrandsCarousel from '../components/BrandsCarousel';
 import ProfessionalStats from '../components/ProfessionalStats';
@@ -11,7 +11,7 @@ import { FaSearch } from 'react-icons/fa';
 import '../styles/products.css';
 
 const Products: React.FC = () => {
-    const { products } = useProducts(); // Usar productos dinámicos
+    const { products, refreshProducts } = useProducts(); // Usar productos dinámicos
     const { 
         cartItems, 
         isCartOpen, 
@@ -24,15 +24,18 @@ const Products: React.FC = () => {
          
     } = useCart();
 
+    // Always use a safe array for products
+    const safeProducts = Array.isArray(products) ? products : [];
+
     const [search, setSearch] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
     const [showGlobalSearch, setShowGlobalSearch] = useState(false);
     const filteredProducts = search.length > 0
-        ? products.filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+        ? safeProducts.filter(p => p.name && p.name.toLowerCase().includes(search.toLowerCase()))
         : [];
 
     const handleAddToCart = (productId: string) => {
-        const product = products.find(p => p.id === productId);
+        const product = safeProducts.find(p => p.id === productId);
         if (product) {
             addToCart({
                 id: product.id,
@@ -42,6 +45,11 @@ const Products: React.FC = () => {
             });
         }
     };
+
+    useEffect(() => {
+        refreshProducts();
+    }, []); // Fetch latest products on mount
+
     return (
         <div className="products-page">
             <Header />
@@ -72,7 +80,19 @@ const Products: React.FC = () => {
                                 {filteredProducts.length > 0 ? (
                                     filteredProducts.slice(0, 8).map(product => (
                                         <li key={product.id} className="product-suggestion-item" onMouseDown={() => { setSearch(product.name); setShowSuggestions(false); }}>
-                                            <img src={product.image} alt={product.name} className="product-suggestion-img" />
+                                            {product.image ? (
+                                                <img 
+                                                    src={product.image} 
+                                                    alt={product.name} 
+                                                    className="product-suggestion-img" 
+                                                    onError={e => {
+                                                        e.currentTarget.src = '/vite.svg'; // fallback image
+                                                        console.warn('Image failed to load:', product.image);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <img src="/vite.svg" alt="No disponible" className="product-suggestion-img" />
+                                            )}
                                             <span className="product-suggestion-name">{product.name}</span>
                                         </li>
                                     ))
@@ -84,11 +104,11 @@ const Products: React.FC = () => {
                     </div>
                 </div>
                 <div className="product-list">
-                    {products.map(product => (
+                    {safeProducts.map(product => (
                         <ProductCard 
                             key={product.id}
                             id={product.id}
-                            image={product.image}
+                            image={product.image || '/vite.svg'}
                             title={product.name}
                             price={product.price}
                             onAddToCart={() => handleAddToCart(product.id)}
@@ -140,7 +160,19 @@ const Products: React.FC = () => {
                         {filteredProducts.length > 0 ? (
                           filteredProducts.slice(0, 8).map(product => (
                             <li key={product.id} className="product-suggestion-item" onMouseDown={() => { setSearch(product.name); setShowSuggestions(false); }}>
-                              <img src={product.image} alt={product.name} className="product-suggestion-img" />
+                              {product.image ? (
+                                <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    className="product-suggestion-img" 
+                                    onError={e => {
+                                        e.currentTarget.src = '/vite.svg';
+                                        console.warn('Image failed to load:', product.image);
+                                    }}
+                                />
+                              ) : (
+                                <img src="/vite.svg" alt="No disponible" className="product-suggestion-img" />
+                              )}
                               <span className="product-suggestion-name">{product.name}</span>
                             </li>
                           ))

@@ -34,10 +34,7 @@ interface Settings {
   currency: string;
 }
 
-const API_URL =
-  import.meta.env.DEV
-    ? '/.netlify/functions/products'
-    : '/api/products';
+const API_URL = '/.netlify/functions/products';
 
 const Admin: React.FC = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -81,6 +78,11 @@ const Admin: React.FC = () => {
   // Add or update product using Netlify Function
   const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Validación de campos obligatorios
+    if (!productForm.name || !productForm.price || !productForm.category || !productForm.description || !productForm.image || !productForm.stock) {
+      alert('Todos los campos son obligatorios. Por favor, completa todos los datos antes de guardar.');
+      return;
+    }
     if (editingProduct) {
       // Update existing product
       const res = await fetch(API_URL, {
@@ -99,7 +101,7 @@ const Admin: React.FC = () => {
         price: Number(productForm.price),
         category: productForm.category,
         description: productForm.description,
-        image: productForm.image,
+        image: productForm.image, // this should be the Cloudinary URL
         stock: Number(productForm.stock),
         createdAt: new Date().toISOString(),
       };
@@ -242,7 +244,7 @@ const Admin: React.FC = () => {
           <input
             type="text"
             id="name"
-            value={productForm.name}
+            value={productForm.name ?? ''}
             onChange={e => setProductForm(prev => ({ ...prev, name: e.target.value }))}
             required
           />
@@ -254,7 +256,7 @@ const Admin: React.FC = () => {
             type="number"
             id="price"
             step="0.01"
-            value={productForm.price}
+            value={productForm.price ?? 0}
             onChange={(e) => setProductForm(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
             required
           />
@@ -264,7 +266,7 @@ const Admin: React.FC = () => {
           <label htmlFor="category">Categoría</label>
           <select
             id="category"
-            value={productForm.category}
+            value={productForm.category ?? ''}
             onChange={(e) => setProductForm(prev => ({ ...prev, category: e.target.value }))}
             required
           >
@@ -280,7 +282,7 @@ const Admin: React.FC = () => {
           <label htmlFor="description">Descripción</label>
           <textarea
             id="description"
-            value={productForm.description}
+            value={productForm.description ?? ''}
             onChange={(e) => setProductForm(prev => ({ ...prev, description: e.target.value }))}
             rows={4}
             required

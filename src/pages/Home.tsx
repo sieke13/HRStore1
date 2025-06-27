@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Header from '../components/Header';
 import RepairSwiper from '../components/RepairSwiper';
 import BrandsCarousel from '../components/BrandsCarousel';
@@ -37,7 +38,7 @@ const Home: React.FC = () => {
         return () => {
             window.removeEventListener('productAdded', handleProductAdded as EventListener);
         };
-    }, [refreshProducts]);
+    }, []); // Only run once on mount
 
     const getProductBadge = (productId: string, index: number) => {
         if (isNewProduct(productId)) {
@@ -170,6 +171,8 @@ const Home: React.FC = () => {
                         {featuredProducts.length > 0 ? (
                             featuredProducts.map((product, index) => {
                                 const badge = getProductBadge(product.id, index);
+                                // Fallback image path as a string (must be in public/ for Vite)
+                                const fallbackImage = '/logo.svg';
                                 return (
                                     <div
                                         key={product.id}
@@ -186,13 +189,42 @@ const Home: React.FC = () => {
                                             transition: "box-shadow 0.18s, border 0.18s, transform 0.18s"
                                         }}
                                     >
-                                        <div className="product-image">
-                                            <img src={product.image} alt={product.name} style={{ maxWidth: "100%", maxHeight: 110, objectFit: "contain", margin: "0 auto 1rem auto", display: "block" }} />
+                                        <div className="product-image" style={{
+                                            width: '100%',
+                                            height: 120,
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            background: '#f9f9fa',
+                                            borderRadius: 18,
+                                            overflow: 'hidden',
+                                            marginBottom: '1rem',
+                                        }}>
+                                            <img
+                                                src={product.image || fallbackImage}
+                                                alt={product.name || 'Producto'}
+                                                style={{
+                                                    width: 'auto',
+                                                    height: '100%',
+                                                    maxWidth: '100%',
+                                                    maxHeight: '100%',
+                                                    objectFit: 'contain',
+                                                    display: 'block',
+                                                    margin: '0 auto'
+                                                }}
+                                                onError={e => {
+                                                    const target = e.target as HTMLImageElement;
+                                                    if (target.src !== fallbackImage) target.src = fallbackImage;
+                                                }}
+                                                loading="lazy"
+                                            />
                                         </div>
                                         <div className="product-content">
                                             <h3 style={{ color: "#1d1d1f", fontFamily: 'Orbitron, Arial, sans-serif', fontWeight: 900 }}>{product.name}</h3>
                                             <p className="product-description" style={{ color: "#515154" }}>{product.description}</p>
-                                            <div className="product-price" style={{ color: "#0071e3", fontWeight: 700, fontSize: "1.1rem" }}>${product.price.toFixed(2)} MXN</div>
+                                            <div className="product-price" style={{ color: "#0071e3", fontWeight: 700, fontSize: "1.1rem" }}>
+                                                ${typeof product.price === 'number' && !isNaN(product.price) ? product.price.toFixed(2) : '0.00'} MXN
+                                            </div>
                                             <div className={`product-badge ${badge.class}`} style={{
                                                 background: "#0071e3",
                                                 color: "#fff",

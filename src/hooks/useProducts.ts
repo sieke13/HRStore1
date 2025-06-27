@@ -28,7 +28,8 @@ export const useProducts = () => {
     const res = await fetch(API_URL);
     if (res.ok) {
       const data = await res.json();
-      setProducts(data);
+      // Defensive: always use the array from data.products
+      setProducts(Array.isArray(data.products) ? data.products : []);
     }
   };
 
