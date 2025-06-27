@@ -87,55 +87,79 @@ const handler = async (event: any): Promise<Response> => {
         [name, price, category, description, image, stock]
       );
       data = result.rows[0];
-    } else if (method === 'PUT') {
-      // Update a product
-      const { id, ...fields } = JSON.parse(event.body);
-      const keys = Object.keys(fields);
-      const values = Object.values(fields);
-      const setClause = keys.map((k, i) => `${k} = $${i + 1}`).join(', ');
-      const result = await client.query(
-        `UPDATE products SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`,
-        [...values, id]
-      );
-      data = result.rows[0];
-    } else if (method === 'DELETE') {
-      // Delete a product
-      let parsedDelete;
-      try {
-        parsedDelete = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
-      } catch (err) {
-        console.error('DELETE: Failed to parse body', event.body, err);
+    } else if (method === 'PUT' || method === 'DELETE') {
+      // Robust body parsing for PUT and DELETE (same as POST)
+      let parsed;
+      let rawBody = event.body;
+      if (rawBody && typeof rawBody.getReader === 'function') {
+        const reader = rawBody.getReader();
+        let chunks = [];
+        let done, value;
+        while (({ done, value } = await reader.read(), !done)) {
+          chunks.push(...value);
+        }
+        rawBody = new TextDecoder().decode(Uint8Array.from(chunks));
+      }
+      if (typeof rawBody === 'string' && rawBody.trim() !== '') {
+        try {
+          parsed = JSON.parse(rawBody);
+        } catch (err) {
+          return new Response(
+            JSON.stringify({ error: 'Invalid JSON in request body', raw: rawBody }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
+        }
+      } else if (typeof rawBody === 'object' && rawBody !== null) {
+        parsed = rawBody;
+      } else {
         return new Response(
-          JSON.stringify({ error: 'Invalid JSON in request body for DELETE', raw: event.body }),
+          JSON.stringify({ error: 'Empty or invalid request body', raw: rawBody }),
           {
             status: 400,
             headers: { 'Content-Type': 'application/json' }
           }
         );
       }
-      const { id } = parsedDelete || {};
-      if (!id) {
-        return new Response(
-          JSON.stringify({ error: 'Missing product id for deletion' }),
-          {
-            status: 400,
-            headers: { 'Content-Type': 'application/json' }
-          }
+      if (method === 'PUT') {
+        // Update a product
+        const { id, ...fields } = parsed;
+        const keys = Object.keys(fields);
+        const values = Object.values(fields);
+        const setClause = keys.map((k, i) => `${k} = $${i + 1}`).join(', ');
+        const result = await client.query(
+          `UPDATE products SET ${setClause} WHERE id = $${keys.length + 1} RETURNING *`,
+          [...values, id]
         );
+        data = result.rows[0];
+      } else if (method === 'DELETE') {
+        // Delete a product
+        const { id } = parsed || {};
+        if (!id) {
+          return new Response(
+            JSON.stringify({ error: 'Missing product id for deletion' }),
+            {
+              status: 400,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
+        }
+        try {
+          await client.query('DELETE FROM products WHERE id = $1', [id]);
+        } catch (err) {
+          console.error('DELETE: DB error', err);
+          return new Response(
+            JSON.stringify({ error: 'Database error during deletion', details: err.message }),
+            {
+              status: 500,
+              headers: { 'Content-Type': 'application/json' }
+            }
+          );
+        }
+        data = null;
       }
-      try {
-        await client.query('DELETE FROM products WHERE id = $1', [id]);
-      } catch (err) {
-        console.error('DELETE: DB error', err);
-        return new Response(
-          JSON.stringify({ error: 'Database error during deletion', details: err.message }),
-          {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' }
-          }
-        );
-      }
-      data = null;
     } else {
       return new Response(
         JSON.stringify({ error: 'Method not allowed' }),
