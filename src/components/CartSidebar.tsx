@@ -58,9 +58,9 @@ const Cart: React.FC<CartProps> = ({
   };
 
   const handleCheckout = () => {
-    setShowPaymentModal(true); // Esto abre el modal de pago
-    onClose(); // Esto cierra el sidebar
-    console.log('Abriendo modal de pago')
+    setShowPaymentModal(true); // Abre el modal de pago
+    onClose(); // Cierra el sidebar
+    console.log('Abriendo modal de pago');
   };
 
   if (!isOpen && !isAnimating) return null;
@@ -199,7 +199,10 @@ const Cart: React.FC<CartProps> = ({
                 </div>
               </div>              {/* Botón de checkout */}
               <div className="cart-actions">
-                <button className="checkout-btn" onClick={handleCheckout}>
+                <button
+                  className="checkout-btn"
+                  onClick={handleCheckout}
+                >
                   💳 Proceder al Pago
                 </button>
                 <div className="secondary-actions">
