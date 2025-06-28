@@ -10,10 +10,12 @@ export const handler: Handler = async (event) => {
 
   try {
     const { items, back_urls, auto_return } = JSON.parse(event.body || '{}');
+    console.log('Received items:', items);
 
-    // You must set your MercadoPago access token in your Netlify environment variables
-    const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
+    const accessToken = process.env.VITE_MERCADOPAGO_ACCESS_TOKEN;
+    console.log('Access token:', accessToken);
     if (!accessToken) {
+      console.error('Missing MercadoPago access token');
       return {
         statusCode: 500,
         body: JSON.stringify({ error: 'Missing MercadoPago access token' }),
@@ -34,6 +36,7 @@ export const handler: Handler = async (event) => {
     });
 
     const data = await response.json();
+    console.log('MercadoPago response:', data);
 
     if (!response.ok) {
       return {
@@ -47,6 +50,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify(data),
     };
   } catch (error: any) {
+    console.error('Serverless error:', error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message || 'Internal Server Error' }),

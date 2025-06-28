@@ -112,6 +112,18 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
     closeCart();
   };
 
+  // Memoiza los items para Cart para evitar recrear el array en cada render
+  const cartItemsForCart = useMemo(
+    () =>
+      cartItems.map((item, idx) => ({
+        ...item,
+        title: item.name,
+        id: typeof item.id === 'number' ? item.id : idx,
+        price: Number(item.price) || 0,
+      })),
+    [cartItems]
+  );
+
   return (
     <div className="products-page">
       <Header />
@@ -219,18 +231,14 @@ const ProductsPage: React.FC<ProductsPageProps> = ({ focusProduct }) => {
         onRemoveItem={removeFromCart}
         onClearCart={clearCart}
         onCheckout={handleCheckout}
+        setShowPaymentModal={setShowPaymentModal} // <-- agrega esto
       />
       {/* Payment Modal */}
       {showPaymentModal && (
         <Cart
           isOpen={showPaymentModal}
           onClose={() => setShowPaymentModal(false)}
-          items={cartItems.map((item, idx) => ({
-            ...item,
-            title: item.name,
-            id: typeof item.id === 'number' ? item.id : idx,
-            price: Number(item.price) || 0
-          }))}
+          items={cartItemsForCart}
         />
       )}
       

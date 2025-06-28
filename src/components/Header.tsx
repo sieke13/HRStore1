@@ -11,6 +11,7 @@ const Header: React.FC = () => {
     const [showGlobalSearch, setShowGlobalSearch] = useState(false);
     const [search, setSearch] = useState('');
     const [showSuggestions, setShowSuggestions] = useState(false);
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
     const { 
         cartItems, 
         isCartOpen, 
@@ -70,7 +71,46 @@ const Header: React.FC = () => {
                             {/* Logo */}
                             <div className="header-logo">
                                 <img src={logoSvg} alt="HRStore Logo" className="logo-image" />
-                                <span className="logo-text">HRStore</span>
+                                <div
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        lineHeight: 0.6,
+                                        fontFamily: "'Orbitron', 'Share Tech Mono', 'Roboto Mono', monospace",
+                                        fontWeight: 900,
+                                        letterSpacing: 1,
+                                        marginLeft: 4,
+                                        textShadow: '0 2px 8px #0001'
+                                    }}
+                                >
+                                    <span
+                                        className="logo-text"
+                                        style={{
+                                            fontSize: '2.1rem',
+                                            fontWeight: 900,
+                                            color: '#222',
+                                            letterSpacing: 2,
+                                            textShadow: '0 2px 8px #3b82f633'
+                                        }}
+                                    >
+                                        HR
+                                    </span>
+                                    <span
+                                        className="logo-text"
+                                        style={{
+                                            marginLeft: '0.65em',
+                                            marginTop: '0.1em', // <-- separa "Store" de la línea
+                                            fontWeight: 750,
+                                            fontSize: '1.5em',
+                                            color: '#3b82f6',
+                                            letterSpacing: 4,
+                                            textShadow: '0 1px 4px #3b82f622'
+                                        }}
+                                    >
+                                        Store
+                                    </span>
+                                </div>
                             </div>
                             
                             {/* Apple-style horizontal menu */}
@@ -175,6 +215,7 @@ const Header: React.FC = () => {
                 onRemoveItem={removeFromCart}
                 onClearCart={clearCart}
                 onCheckout={handleCheckout}
+                setShowPaymentModal={setShowPaymentModal} // <-- AGREGA ESTA LÍNEA
             />
 
             {showGlobalSearch && (

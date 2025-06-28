@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
 import PayPalButton from './PayPalButton';
 
 // Configuración de MercadoPago
-const MERCADOPAGO_PUBLIC_KEY = import.meta.env.VITE_MERCADOPAGO_PUBLIC_KEY || 'TEST-your-public-key-here';
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const MERCADOPAGO_PUBLIC_KEY = import.meta.env.VITE_MERCADOPAGO_PUBLIC_KEY || 'TTT_PUBLIC_KEY';
 
 // Inicializar MercadoPago
-initMercadoPago(MERCADOPAGO_PUBLIC_KEY, { 
-  locale: 'es-MX' 
-});
+// initMercadoPago(MERCADOPAGO_PUBLIC_KEY, { 
+//   locale: 'es-MX' 
+// });
 
 interface CartItem {
   id: number;
@@ -26,7 +24,6 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
-  const [preferenceId, setPreferenceId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<'mercadopago' | 'paypal' | null>(null);
 
@@ -34,18 +31,22 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
 
   const createPreference = async () => {
     setLoading(true);
+    // Abre la ventana inmediatamente para evitar bloqueos de popup
+    const mpWindow = window.open('', '_blank');
     try {
+      const itemsPayload = items.map(item => ({
+        title: item.title || "Producto",
+        unit_price: Number(item.price) > 0 ? Number(item.price) : 1,
+        quantity: Number(item.quantity) > 0 ? Number(item.quantity) : 1,
+      }));
+
       const response = await fetch('/.netlify/functions/create-preference', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          items: items.map(item => ({
-            title: item.title,
-            unit_price: item.price,
-            quantity: item.quantity,
-          })),
+          items: itemsPayload,
           back_urls: {
             success: `${window.location.origin}/payment-success`,
             failure: `${window.location.origin}/payment-failure`,
@@ -55,28 +56,42 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const data = await response.json();
+      if (response.ok && data.init_point) {
+        // Redirige la ventana abierta a la URL de pago
+        if (mpWindow) {
+          mpWindow.location.href = data.init_point;
+        }
+      } else {
+        if (mpWindow) {
+          mpWindow.close();
+        }
+        alert('No se pudo iniciar el pago con MercadoPago.');
+        console.error('MercadoPago error:', data);
       }
-
-      const preference = await response.json();
-      console.log('Preference created:', preference);
-      setPreferenceId(preference.id);
     } catch (error) {
-      console.error('Error creating preference:', error);
-      alert('Error al procesar el pago. Por favor intenta de nuevo.');
+      if (mpWindow) {
+        mpWindow.close();
+      }
+      alert('Error al crear la preferencia de pago.');
+      console.error('Error creando preferencia:', error);
     } finally {
       setLoading(false);
     }
   };
 
   // Funciones para manejar PayPal
-  const handlePayPalSuccess = (details: any) => {
+  interface PayPalPaymentDetails {
+    paymentId: string;
+    [key: string]: unknown;
+  }
+
+  const handlePayPalSuccess = (details: PayPalPaymentDetails) => {
     console.log('PayPal payment successful:', details);
     window.location.href = `/payment-success?provider=paypal&paymentId=${details.paymentId}`;
   };
 
-  const handlePayPalError = (error: any) => {
+  const handlePayPalError = (error: unknown) => {
     console.error('PayPal payment error:', error);
     alert('Error en el pago con PayPal. Por favor intenta de nuevo.');
   };
@@ -84,12 +99,9 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="cart-overlay">
-      <div className="cart-container">
-        <div className="cart-header">
-          <h2>🛒 Tu Carrito</h2>
-          <button className="cart-close" onClick={onClose}>✕</button>
-        </div>
+    <div className="cart-modal-overlay">
+      <div className="cart-modal-container">
+        <button className="cart-modal-close" onClick={onClose}>✕</button>
 
         <div className="cart-content">
           {items.length === 0 ? (
@@ -138,7 +150,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
                 <div className="payment-method-selector">
                   <button 
                     className={`payment-method-btn ${selectedPaymentMethod === 'mercadopago' ? 'active' : ''}`}
-                    onClick={() => setSelectedPaymentMethod('mercadopago')}
+                    onClick={() => {
+                      setSelectedPaymentMethod('mercadopago');
+                      console.log('Seleccionado MercadoPago');
+                    }}
                   >
                     <img 
                       src="https://www.mercadopago.com/org-img/MP3/home/logomp3.gif" 
@@ -163,30 +178,20 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
 
                 {selectedPaymentMethod === 'mercadopago' && (
                   <div className="mercadopago-section">
-                    {!preferenceId ? (
-                      <button 
-                        className="mercadopago-btn"
-                        onClick={createPreference}
-                        disabled={loading}
-                      >
-                        {loading ? (
-                          <span className="loading">
-                            <span className="spinner"></span>
-                            Procesando...
-                          </span>
-                        ) : (
-                          <>
-                            Pagar con MercadoPago
-                          </>
-                        )}
-                      </button>
-                    ) : (
-                      <div className="wallet-container">
-                        <Wallet 
-                          initialization={{ preferenceId: preferenceId }}
-                        />
-                      </div>
-                    )}
+                    <button 
+                      className="mercadopago-btn"
+                      onClick={createPreference}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <span className="loading">
+                          <span className="spinner"></span>
+                          Procesando...
+                        </span>
+                      ) : (
+                        <>Pagar con MercadoPago</>
+                      )}
+                    </button>
                   </div>
                 )}
 
@@ -232,6 +237,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items }) => {
                   </div>
                 </div>
               </div>
+
+              <button onClick={() => window.open('https://www.mercadopago.com', '_blank')} className="test-popup-button">
+                Probar popup MercadoPago
+              </button>
             </>
           )}
         </div>

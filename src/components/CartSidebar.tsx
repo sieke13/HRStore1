@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { SiMercadopago, SiPaypal, SiVisa } from "react-icons/si";
 import '../styles/cart.css';
 
 interface CartItem {
@@ -17,6 +18,7 @@ interface CartProps {
   onRemoveItem: (id: string) => void;
   onClearCart: () => void;
   onCheckout: () => void;
+  setShowPaymentModal: (open: boolean) => void;
 }
 
 const Cart: React.FC<CartProps> = ({
@@ -26,7 +28,7 @@ const Cart: React.FC<CartProps> = ({
   onUpdateQuantity,
   onRemoveItem,
   onClearCart,
-  onCheckout
+  setShowPaymentModal
 }) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -53,6 +55,12 @@ const Cart: React.FC<CartProps> = ({
   const handleClose = () => {
     setIsAnimating(false);
     setTimeout(() => onClose(), 300);
+  };
+
+  const handleCheckout = () => {
+    setShowPaymentModal(true); // Esto abre el modal de pago
+    onClose(); // Esto cierra el sidebar
+    console.log('Abriendo modal de pago')
   };
 
   if (!isOpen && !isAnimating) return null;
@@ -161,15 +169,15 @@ const Cart: React.FC<CartProps> = ({
                 <h4>💳 Métodos de Pago</h4>
                 <div className="payment-options">
                   <div className="payment-option">
-                    <img src="/icons/mercadopago.svg" alt="MercadoPago" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
+                    <SiMercadopago size={28} color="#009ee3" />
                     <span>MercadoPago</span>
                   </div>
                   <div className="payment-option">
-                    <img src="/icons/paypal.svg" alt="PayPal" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
+                    <SiPaypal size={28} color="#003087" />
                     <span>PayPal</span>
                   </div>
                   <div className="payment-option">
-                    <img src="/icons/visa.svg" alt="Visa" onError={e => (e.currentTarget.src = '/icons/credit-card.svg')} />
+                    <SiVisa size={28} color="#1a1f71" />
                     <span>Tarjetas</span>
                   </div>
                 </div>
@@ -191,7 +199,7 @@ const Cart: React.FC<CartProps> = ({
                 </div>
               </div>              {/* Botón de checkout */}
               <div className="cart-actions">
-                <button className="checkout-btn" onClick={onCheckout}>
+                <button className="checkout-btn" onClick={handleCheckout}>
                   💳 Proceder al Pago
                 </button>
                 <div className="secondary-actions">
@@ -222,3 +230,4 @@ const Cart: React.FC<CartProps> = ({
 };
 
 export default Cart;
+

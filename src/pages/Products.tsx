@@ -5,6 +5,7 @@ import ProfessionalStats from '../components/ProfessionalStats';
 import ProductCard from '../components/ProductCard';
 import CartSidebar from '../components/CartSidebar';
 import WhatsAppChatbot from '../components/WhatsAppChatbot';
+import Cart from '../components/Cart';
 import { useCart } from '../hooks/useCart';
 import { useProducts } from '../hooks/useProducts';
 import { FaSearch } from 'react-icons/fa';
@@ -23,6 +24,9 @@ const Products: React.FC = () => {
         handleCheckout,
          
     } = useCart();
+
+    // State for payment modal
+    const [showPaymentModal, setShowPaymentModal] = useState(false);
 
     // Always use a safe array for products
     const safeProducts = Array.isArray(products) ? products : [];
@@ -49,6 +53,13 @@ const Products: React.FC = () => {
     useEffect(() => {
         refreshProducts();
     }, []); // Fetch latest products on mount
+
+    const cartItemsForCart = cartItems.map((item, idx) => ({
+        ...item,
+        title: item.name,
+        id: typeof item.id === 'number' ? item.id : idx,
+        price: Number(item.price) || 0,
+    }));
 
     return (
         <div className="products-page">
@@ -115,18 +126,24 @@ const Products: React.FC = () => {
                         />
                     ))}
                 </div>
-            </div>
+<CartSidebar
+  isOpen={isCartOpen}
+  onClose={closeCart}
+  items={cartItems}
+  onUpdateQuantity={updateQuantity}
+  onRemoveItem={removeFromCart}
+  onClearCart={clearCart}
+  onCheckout={handleCheckout}
+  setShowPaymentModal={setShowPaymentModal}
+/>
 
-            {/* Carrito lateral */}
-            <CartSidebar
-                isOpen={isCartOpen}
-                onClose={closeCart}
-                items={cartItems}
-                onUpdateQuantity={updateQuantity}
-                onRemoveItem={removeFromCart}
-                onClearCart={clearCart}
-                onCheckout={handleCheckout}
-            />
+{showPaymentModal && (
+  <Cart
+    isOpen={showPaymentModal}
+    onClose={() => setShowPaymentModal(false)}
+    items={cartItemsForCart}
+  />
+)}
             
             {/* WhatsApp Chatbot */}
             <WhatsAppChatbot />
@@ -187,6 +204,7 @@ const Products: React.FC = () => {
               )}
             </div>
         </div>
+    </div>
     );
 };
 

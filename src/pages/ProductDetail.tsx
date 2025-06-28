@@ -25,6 +25,7 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {  const 
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedImage, setSelectedImage] = useState<string>('');
   const [quantity, setQuantity] = useState<number>(1);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
 
   useEffect(() => {
     const foundProduct = products.find(p => p.id === productId);
@@ -447,6 +448,9 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productId }) => {  const 
         onRemoveItem={removeFromCart}
         onClearCart={clearCart}
         onCheckout={handleCheckout}
+          setShowPaymentModal={setShowPaymentModal}
+
+          
       />
 
       <WhatsAppChatbot />
