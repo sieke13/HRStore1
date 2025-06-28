@@ -68,9 +68,9 @@ app.post('/api/create-preference', async (req, res) => {
         }
       },
       back_urls: {
-        success: back_urls?.success || `${req.protocol}://${req.get('host')}/payment-success`,
-        failure: back_urls?.failure || `${req.protocol}://${req.get('host')}/payment-failure`,
-        pending: back_urls?.pending || `${req.protocol}://${req.get('host')}/payment-pending`,
+        success: (back_urls && back_urls.success) ? back_urls.success : `${req.protocol}://${req.get('host')}/payment-success`,
+        failure: (back_urls && back_urls.failure) ? back_urls.failure : `${req.protocol}://${req.get('host')}/payment-failure`,
+        pending: (back_urls && back_urls.pending) ? back_urls.pending : `${req.protocol}://${req.get('host')}/payment-pending`,
       },
       auto_return: 'approved',
       payment_methods: {
@@ -86,6 +86,7 @@ app.post('/api/create-preference', async (req, res) => {
     const result = await preference.create({ body: preferenceData });
     
     console.log('Preference created:', result.id);
+    console.log('Back URLs enviados a MercadoPago:', preferenceData.back_urls);
     
     res.json({
       id: result.id,

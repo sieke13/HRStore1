@@ -455,25 +455,32 @@
   object-fit: contain;
 }
 
-.mercadopago-btn {
+.mercadopago-btn, .paypal-btn {
   width: 100%;
-  background: linear-gradient(135deg, #0071e3 0%, #34c759 100%);
-  color: #fff;
-  border: none;
+  margin-bottom: 12px;
   padding: 16px;
   border-radius: 16px;
-  cursor: pointer;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 800;
-  margin-top: 12px;
-  transition: background 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  border: none;
+  color: #fff;
   box-shadow: 0 4px 16px rgba(52,199,89,0.08);
   font-family: inherit;
   letter-spacing: -0.02em;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.mercadopago-btn {
+  background: linear-gradient(135deg, #00b1ea 0%, #00e1b0 100%);
 }
 .mercadopago-btn:hover {
-  background: linear-gradient(135deg, #34c759 0%, #0071e3 100%);
-  box-shadow: 0 8px 32px rgba(0,113,227,0.12);
+  background: linear-gradient(135deg, #00e1b0 0%, #00b1ea 100%);
+}
+.paypal-btn {
+  background: linear-gradient(135deg, #003087 0%, #009cde 100%);
+}
+.paypal-btn:hover {
+  background: linear-gradient(135deg, #009cde 0%, #003087 100%);
 }
 
 @media (max-width: 768px) {

@@ -12,7 +12,7 @@ export const handler: Handler = async (event) => {
     const { items, back_urls, auto_return } = JSON.parse(event.body || '{}');
     console.log('Received items:', items);
 
-    const accessToken = process.env.VITE_MERCADOPAGO_ACCESS_TOKEN;
+    const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN;
     console.log('Access token:', accessToken);
     if (!accessToken) {
       console.error('Missing MercadoPago access token');
@@ -22,17 +22,25 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    const safeBackUrls = back_urls || {};
+    const payload = {
+      items,
+      back_urls: {
+        success: 'https://hrteststore.netlify.app/',
+        failure: 'https://hrteststore.netlify.app/',
+        pending: 'https://hrteststore.netlify.app/',
+      },
+      auto_return,
+    };
+    console.log('Payload enviado a MercadoPago:', JSON.stringify(payload, null, 2));
+
     const response = await fetch('https://api.mercadopago.com/checkout/preferences', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
-      body: JSON.stringify({
-        items,
-        back_urls,
-        auto_return,
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();

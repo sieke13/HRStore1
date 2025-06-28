@@ -63,6 +63,42 @@ const Cart: React.FC<CartProps> = ({
     console.log('Abriendo modal de pago');
   };
 
+  const handleMercadoPago = async () => {
+    const mpWindow = window.open('', '_blank');
+    try {
+      const itemsPayload = items.map(item => ({
+        title: item.name || "Producto",
+        unit_price: Number(item.price) > 0 ? Number(item.price) : 1,
+        quantity: Number(item.quantity) > 0 ? Number(item.quantity) : 1,
+      }));
+
+      const response = await fetch('/.netlify/functions/create-preference', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          items: itemsPayload,
+          back_urls: {
+            success: `${window.location.origin}/payment-success`,
+            failure: `${window.location.origin}/payment-failure`,
+            pending: `${window.location.origin}/payment-pending`
+          },
+          auto_return: 'approved',
+        }),
+      });
+
+      const data = await response.json();
+      if (response.ok && data.init_point) {
+        mpWindow.location.href = data.init_point;
+      } else {
+        mpWindow.close();
+        alert('No se pudo iniciar el pago con MercadoPago.');
+      }
+    } catch (error) {
+      mpWindow.close();
+      alert('Error al crear la preferencia de pago.');
+    }
+  };
+
   if (!isOpen && !isAnimating) return null;
 
   return (
@@ -191,7 +227,7 @@ const Cart: React.FC<CartProps> = ({
                 </div>
                 <div className="benefit-item">
                   <span className="benefit-icon">🚚</span>
-                  <span>Envío gratis en compras +$500</span>
+                  <span>Envío gratis en compras +$1500</span>
                 </div>
                 <div className="benefit-item">
                   <span className="benefit-icon">🔄</span>
@@ -200,11 +236,22 @@ const Cart: React.FC<CartProps> = ({
               </div>              {/* Botón de checkout */}
               <div className="cart-actions">
                 <button
-                  className="checkout-btn"
-                  onClick={handleCheckout}
+                  className="mercadopago-btn"
+                  onClick={handleMercadoPago}
                 >
-                  💳 Proceder al Pago
+                  💳 Pagar con MercadoPago
                 </button>
+
+                <button
+                  className="paypal-btn"
+                  onClick={() => {
+                    // Aquí puedes abrir el popup de PayPal o redirigir a tu flujo de PayPal
+                    window.open('https://www.paypal.com/checkoutnow', '_blank');
+                  }}
+                >
+                  💰 Pagar con PayPal
+                </button>
+
                 <div className="secondary-actions">
                   <button className="continue-shopping-secondary" onClick={handleClose}>
                     Continuar Comprando
