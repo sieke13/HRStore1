@@ -52,27 +52,33 @@ const AnimatedHeroBackground: React.FC = () => {
         <div className="animated-hero-background" style={{
             position: 'absolute',
             top: 0,
+            left: 0,
             right: 0,
             bottom: 0,
-            width: '48%',
+            width: '100%',
+            height: '100%',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-end',
+            justifyContent: 'center',
             pointerEvents: 'none',
             zIndex: 1,
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif' // Apple Store font stack
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif',
+            overflow: 'hidden',
         }}>
             <div
                 className={`repair-image-container ${isVisible ? 'visible' : 'hidden'}`}
                 style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '100%',
-                    height: '100%',
                     transition: 'opacity 1s',
                     opacity: isVisible ? 1 : 0,
-                    paddingRight: '8vw'
+                    zIndex: 1,
                 }}
             >
                 <img
@@ -81,13 +87,20 @@ const AnimatedHeroBackground: React.FC = () => {
                     className={`repair-image ${currentImage.type === 'photo' ? 'photo-style' : 'svg-style'}`}
                     onError={handleImageError}
                     style={{
-                        maxHeight: 340,
-                        maxWidth: '100%',
-                        objectFit: 'contain',
-                        boxShadow: currentImage.type === 'photo' ? '0 4px 24px #0002' : 'none',
-                        borderRadius: currentImage.type === 'photo' ? 18 : 0,
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        opacity: 0.22,
+                        filter: 'blur(0.5px)',
+                        borderRadius: 32,
+                        boxShadow: '0 8px 48px #0002',
                         background: '#fff',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif' // Apple Store font stack for alt text
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1,
+                        pointerEvents: 'none',
+                        transition: 'opacity 1s',
                     }}
                 />
             </div>

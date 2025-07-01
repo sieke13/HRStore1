@@ -128,11 +128,33 @@ const Cart: React.FC<CartProps> = ({
           ) : (
             <>              {/* Lista compacta de productos seleccionados - estilo mejorado */}
               <div className="cart-summary-list">
-                <div className="summary-items-compact">
+                <div className="summary-items-compact" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: 8 }}>
                   {items.map(item => (
-                    <div key={`summary-${item.id}`} className="summary-item-compact">
-                      <span className="summary-name-compact">{item.name}</span>
-                      <span className="summary-quantity-compact">x{item.quantity}</span>
+                    <div
+                      key={`summary-${item.id}`}
+                      className="summary-item-compact"
+                      style={{
+                        background: '#f5f5f7',
+                        borderRadius: 10,
+                        boxShadow: '0 2px 8px #0001',
+                        padding: '7px 14px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 8,
+                        minWidth: 0,
+                        fontSize: '0.98em',
+                        fontWeight: 600,
+                        color: '#222',
+                        border: '1px solid #e0e0e5',
+                        flex: '0 1 auto',
+                        maxWidth: 120,
+                        overflow: 'hidden',
+                        whiteSpace: 'nowrap',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      <span className="summary-name-compact" style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</span>
+                      <span className="summary-quantity-compact" style={{ color: '#3b82f6', fontWeight: 800, marginLeft: 4 }}>x{item.quantity}</span>
                     </div>
                   ))}
                 </div>
@@ -200,24 +222,6 @@ const Cart: React.FC<CartProps> = ({
                 </div>
               </div>
 
-              {/* Métodos de pago */}
-              <div className="payment-methods">
-                <h4>💳 Métodos de Pago</h4>
-                <div className="payment-options">
-                  <div className="payment-option">
-                    <SiMercadopago size={28} color="#009ee3" />
-                    <span>MercadoPago</span>
-                  </div>
-                  <div className="payment-option">
-                    <SiPaypal size={28} color="#003087" />
-                    <span>PayPal</span>
-                  </div>
-                  <div className="payment-option">
-                    <SiVisa size={28} color="#1a1f71" />
-                    <span>Tarjetas</span>
-                  </div>
-                </div>
-              </div>
 
               {/* Garantías y beneficios */}
               <div className="cart-benefits">

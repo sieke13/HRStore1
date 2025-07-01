@@ -69,8 +69,18 @@ const Header: React.FC = () => {
                     <div className="container">
                         <div className="header-content">
                             {/* Logo */}
-                            <div className="header-logo">
-                                <img src={logoSvg} alt="HRStore Logo" className="logo-image" />
+                            <div className="header-logo" onClick={() => window.location.href = '/'} tabIndex={0} role="button" aria-label="Ir a inicio" onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') window.location.href = '/'; }}>
+                                <img 
+                                    src={logoSvg} 
+                                    alt="HRStore Logo" 
+                                    className="logo-image"
+                                    style={{
+                                        height: '64px',
+                                        width: 'auto',
+                                        maxHeight: '80px',
+                                        display: 'block',
+                                    }}
+                                />
                                 <div
                                     style={{
                                         display: 'flex',
@@ -259,6 +269,79 @@ const Header: React.FC = () => {
                     </div>
                 </div>
             )}
+
+            {/* Mobile menu overlay */}
+            <div
+                className={`mobile-menu-overlay${isMenuOpen ? ' open' : ''}`}
+                style={{
+                    pointerEvents: isMenuOpen ? 'auto' : 'none',
+                    background: 'transparent',
+                    position: 'fixed',
+                    inset: 0,
+                    zIndex: 2000,
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                }}
+                onClick={() => setIsMenuOpen(false)}
+            >
+                <nav
+                    className={`mobile-menu${isMenuOpen ? ' slide-in-cascade' : ''}`}
+                    style={{
+                        marginTop: 80,
+                        marginLeft: 18,
+                        minWidth: 220,
+                        maxWidth: 320,
+                        background: '#fff',
+                        boxShadow: '0 8px 32px #0002',
+                        borderRadius: 18,
+                        padding: '18px 0',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: 0,
+                        zIndex: 2100,
+                        transform: isMenuOpen ? 'scale(1) translateY(0)' : 'scale(0.95) translateY(-24px)',
+                        opacity: isMenuOpen ? 1 : 0,
+                        transition: 'all 0.35s cubic-bezier(.7,0,.3,1)',
+                        overflow: 'hidden',
+                    }}
+                    onClick={e => e.stopPropagation()}
+                >
+                    {[['/', 'Inicio'], ['/products', 'Productos'], ['/services', 'Servicios'], ['#about', 'Nosotros'], ['/contact', 'Contacto']].map(([href, label], idx) => (
+                        <a
+                            key={href}
+                            href={href}
+                            className="nav-link"
+                            style={{
+                                padding: '18px 32px',
+                                opacity: isMenuOpen ? 1 : 0,
+                                transform: isMenuOpen ? 'translateY(0)' : 'translateY(-24px)',
+                                transition: `all 0.35s cubic-bezier(.7,0,.3,1) ${(idx * 60)}ms`,
+                                fontWeight: 700,
+                                fontSize: '1.1rem',
+                                color: '#222',
+                                letterSpacing: 1,
+                                borderBottom: idx < 4 ? '1px solid #f0f0f0' : 'none',
+                                cursor: 'pointer',
+                                background: 'none',
+                                textDecoration: 'none',
+                                borderRadius: 0,
+                            }}
+                            onClick={e => {
+                                if (href.startsWith('#')) {
+                                    setIsMenuOpen(false);
+                                } else {
+                                    e.preventDefault();
+                                    window.location.href = href;
+                                    setIsMenuOpen(false);
+                                }
+                            }}
+                        >
+                            {label}
+                        </a>
+                    ))}
+                </nav>
+            </div>
         </>
     );
 };
