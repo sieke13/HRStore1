@@ -14,6 +14,7 @@ import {
   FaWhatsapp,
   FaInstagram,
   FaTiktok,
+  FaCheckCircle,
   FaMobile,
   FaCamera,
   FaHeadphones,
@@ -33,148 +34,128 @@ const Home: React.FC = () => {
             {/* Spacer for fixed header */}
             <div style={{ height: '104px' }} />
             
-            {/* Hero Section - Estilo Moderno con Cards */}
-            <section className="hero-modern-cards">
+            {/* Hero Section - Diseño Minimalista */}
+            <section className="hero-minimal">
                 <div className="container">
-                    <div className="hero-grid-layout">
-                        {/* Card Principal Grande */}
-                        <div className="hero-card-main">
-                            <div className="hero-card-content">
-                                <div className="hero-badge">OFERTA 30% OFF</div>
-                                <h1 className="hero-title-modern">
-                                    REPARACIONES
-                                    <br />
-                                    <span className="hero-subtitle-accent">NUEVOS SERVICIOS</span>
-                                </h1>
-                                <button className="hero-btn-modern">ORDENAR</button>
-                            </div>
-                            <div className="hero-card-image">
-                                <div className="device-illustration">
-                                    <FaMobile className="device-icon-large" />
-                                </div>
-                            </div>
+                    <div className="hero-content-center">
+                        <h1 className="hero-title-clean">
+                            Reparaciones Profesionales
+                            <br />
+                            <span className="highlight-text">para tu Dispositivo</span>
+                        </h1>
+                        
+                        <p className="hero-subtitle">
+                            Servicio técnico especializado con garantía extendida y diagnóstico gratuito
+                        </p>
+                        
+                        <div className="hero-buttons">
+                            <Link to="/services" className="btn-primary-clean">
+                                Solicitar Reparación
+                            </Link>
+                            <a href="tel:+5255123456" className="btn-secondary-clean">
+                                <FaPhoneAlt className="btn-icon" />
+                                Llamar Ahora
+                            </a>
                         </div>
-
-                        {/* Cards Secundarias */}
-                        <div className="hero-cards-secondary">
-                            <div className="hero-card-small">
-                                <div className="card-small-content">
-                                    <h3>PANTALLAS</h3>
-                                    <p>REPARACIÓN GARANTIZADA</p>
-                                    <button className="btn-small">ORDENAR</button>
-                                </div>
-                                <div className="card-small-icon">
-                                    <FaCamera className="card-icon" />
-                                </div>
+                        
+                        <div className="hero-features">
+                            <div className="feature-badge">
+                                <FaShieldAlt className="feature-icon" />
+                                <span>Garantía 6 meses</span>
                             </div>
-                            
-                            <div className="hero-card-small hero-card-tools">
-                                <div className="card-small-content">
-                                    <h3>HARDWARE</h3>
-                                    <p>COMPONENTES INTERNOS</p>
-                                    <button className="btn-small">ORDENAR</button>
-                                </div>
-                                <div className="card-small-icon">
-                                    <FaTools className="card-icon" />
-                                </div>
+                            <div className="feature-badge">
+                                <FaClock className="feature-icon" />
+                                <span>Entrega 24h</span>
                             </div>
-                        </div>
-                    </div>
-
-                    {/* Servicios Badge */}
-                    <div className="services-badge-section">
-                        <div className="service-badge-item">
-                            <FaShieldAlt className="badge-icon" />
-                            <span>6 MESES GARANTÍA</span>
-                        </div>
-                        <div className="service-badge-item">
-                            <FaClock className="badge-icon" />
-                            <span>ENTREGA 24H</span>
-                        </div>
-                        <div className="service-badge-item">
-                            <FaUsers className="badge-icon" />
-                            <span>TÉCNICOS CERTIFICADOS</span>
+                            <div className="feature-badge">
+                                <FaTools className="feature-icon" />
+                                <span>Técnicos certificados</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
-
-            {/* Servicios Section - Cards Estilo Moderno */}
-            <section className="services-modern-grid">
+            
+            {/* Servicios Section - Cards Limpias */}
+            <section className="services-clean">
                 <div className="container">
-                    <div className="categories-tabs">
-                        <button className="tab-btn active">Todo</button>
-                        <button className="tab-btn">Pantallas</button>
-                        <button className="tab-btn">Hardware</button>
-                        <button className="tab-btn">Audio</button>
-                        <button className="tab-btn">Cámaras</button>
+                    <div className="section-header-clean">
+                        <h2 className="section-title">Nuestros Servicios</h2>
+                        <p className="section-subtitle">Soluciones especializadas para cada tipo de dispositivo</p>
                     </div>
                     
-                    <div className="services-cards-grid">
-                        <div className="service-card-modern featured">
-                            <div className="service-badge-top">Más Vendido</div>
-                            <div className="service-card-visual">
-                                <div className="service-icon-modern">
-                                    <FaMobile />
-                                </div>
-                                <h3 className="service-name">Reparación Pantalla iPhone</h3>
-                                <p className="service-subtitle">Sigue evolucionando tu experiencia</p>
-                                <div className="service-price">$ 899.00</div>
+                    <div className="services-grid-clean">
+                        <div className="service-card-clean">
+                            <div className="service-icon-wrapper">
+                                <FaMobile className="service-icon" />
                             </div>
+                            <h3 className="service-title">Reparación de Pantallas</h3>
+                            <p className="service-description">
+                                Cambio de pantallas rotas, táctiles defectuosos y cristales protectores
+                            </p>
+                            <ul className="service-features">
+                                <li><FaCheckCircle className="check-icon" />Pantallas originales</li>
+                                <li><FaCheckCircle className="check-icon" />Instalación profesional</li>
+                                <li><FaCheckCircle className="check-icon" />Garantía 6 meses</li>
+                            </ul>
+                            <Link to="/services" className="service-link">
+                                Ver detalles <FaArrowRight />
+                            </Link>
                         </div>
-
-                        <div className="service-card-modern">
-                            <div className="service-badge-top">Más Vendido</div>
-                            <div className="service-card-visual">
-                                <div className="service-icon-modern secondary">
-                                    <FaCamera />
-                                </div>
-                                <h3 className="service-name">Reparación Cámara</h3>
-                                <p className="service-subtitle">Quizás te encante el resultado</p>
-                                <div className="service-price">$ 599.00</div>
+                        
+                        <div className="service-card-clean">
+                            <div className="service-icon-wrapper">
+                                <FaTools className="service-icon" />
                             </div>
+                            <h3 className="service-title">Reparaciones de Hardware</h3>
+                            <p className="service-description">
+                                Cambio de baterías, botones, puertos de carga y componentes internos
+                            </p>
+                            <ul className="service-features">
+                                <li><FaCheckCircle className="check-icon" />Diagnóstico gratuito</li>
+                                <li><FaCheckCircle className="check-icon" />Repuestos de calidad</li>
+                                <li><FaCheckCircle className="check-icon" />Técnicos certificados</li>
+                            </ul>
+                            <Link to="/services" className="service-link">
+                                Ver detalles <FaArrowRight />
+                            </Link>
                         </div>
-
-                        <div className="service-card-modern">
-                            <div className="service-badge-top">Más Vendido</div>
-                            <div className="service-card-visual">
-                                <div className="service-icon-modern tertiary">
-                                    <FaHeadphones />
-                                </div>
-                                <h3 className="service-name">Audio y Conectividad</h3>
-                                <p className="service-subtitle">Sonido cristalino garantizado</p>
-                                <div className="service-price">$ 399.00</div>
+                        
+                        <div className="service-card-clean">
+                            <div className="service-icon-wrapper">
+                                <FaCamera className="service-icon" />
                             </div>
+                            <h3 className="service-title">Reparación de Cámaras</h3>
+                            <p className="service-description">
+                                Reparación de cámaras principales, frontales y sistemas de enfoque
+                            </p>
+                            <ul className="service-features">
+                                <li><FaCheckCircle className="check-icon" />Calibración precisa</li>
+                                <li><FaCheckCircle className="check-icon" />Pruebas de calidad</li>
+                                <li><FaCheckCircle className="check-icon" />Resultados garantizados</li>
+                            </ul>
+                            <Link to="/services" className="service-link">
+                                Ver detalles <FaArrowRight />
+                            </Link>
                         </div>
-
-                        <div className="service-card-modern">
-                            <div className="service-badge-top">Más Vendido</div>
-                            <div className="service-card-visual">
-                                <div className="service-icon-modern quaternary">
-                                    <FaTools />
-                                </div>
-                                <h3 className="service-name">Hardware Completo</h3>
-                                <p className="service-subtitle">Reparación de componentes</p>
-                                <div className="service-price">$ 799.00</div>
+                        
+                        <div className="service-card-clean">
+                            <div className="service-icon-wrapper">
+                                <FaHeadphones className="service-icon" />
                             </div>
+                            <h3 className="service-title">Audio y Conectividad</h3>
+                            <p className="service-description">
+                                Reparación de altavoces, micrófono, bluetooth y problemas de audio
+                            </p>
+                            <ul className="service-features">
+                                <li><FaCheckCircle className="check-icon" />Audio cristalino</li>
+                                <li><FaCheckCircle className="check-icon" />Conectividad estable</li>
+                                <li><FaCheckCircle className="check-icon" />Pruebas exhaustivas</li>
+                            </ul>
+                            <Link to="/services" className="service-link">
+                                Ver detalles <FaArrowRight />
+                            </Link>
                         </div>
-
-                        <div className="service-card-modern">
-                            <div className="service-badge-top">Más Vendido</div>
-                            <div className="service-card-visual">
-                                <div className="service-icon-modern fifth">
-                                    <FaShieldAlt />
-                                </div>
-                                <h3 className="service-name">Servicio Premium</h3>
-                                <p className="service-subtitle">Garantía extendida incluida</p>
-                                <div className="service-price">$ 1299.00</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="services-footer">
-                        <h4>Servicios</h4>
-                        <a href="/services" className="ver-mas-link">Ver más</a>
                     </div>
                 </div>
             </section>
